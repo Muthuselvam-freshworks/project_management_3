@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <style>
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+:root {
+  --red: #f9004d;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+.dropdown{
+    margin-top:-17px;
+}
+
+ 
+.dropdown-btn {
+    border: none;
+    background-color: transparent;
+    color: #f8014d;
+    padding: 3px 30px;
+    border-radius: 20px;
+    transition: .3s;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+.dropdown-btn:hover {
+    background-color: #f8014d;
+    color: #fff;
+}
+
+
+
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--red);
+  border-left: 10px solid var(--red);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+ .navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+} 
+
+ .navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--white);
+} 
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  /* display: flex; */
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--red);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 10px;
+  border-bottom: 1px solid #ccc; 
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: left;
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+.cardBox .card-2 {
+    height:48px;
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  align-item:center;
+  justify-content: left;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--red);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+
+
+
+/* ================== Order Details List ============== */
+.details {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr ;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.details .recentOrders {
+  position: relative;
+  /* display: grid; */
+  min-height: 970px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--red);
+}
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--red);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.details table thead td {
+  font-weight: 600;
+}
+.details .recentOrders table tr {
+  color: var(--black1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+}
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+.details .recentOrders table tbody tr:hover {
+  background: var(--red);
+  color: var(--white);
+}
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+.details .recentOrders table tr td:last-child {
+  text-align: start;
+}
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: start;
+}
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: start;
+}
+.status.delivered {
+  padding: 2px 4px;
+  background: #8de02c;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.status.return {
+  padding: 2px 4px;
+  background: #f00;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.recentCustomers {
+  position: relative;
+  /* display: grid; */
+  min-height: 500px;
+  padding: 20px;
+  background: var(--white);
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+.recentCustomers .imgBx {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.recentCustomers .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recentCustomers table tr td {
+  padding: 12px 10px;
+}
+.recentCustomers table tr td h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2rem;
+}
+.recentCustomers table tr td h4 span {
+  font-size: 14px;
+  color: var(--black2);
+}
+.recentCustomers table tr:hover {
+  background: var(--red);
+  color: var(--white);
+  
+}
+.recentCustomers table tr:hover td h4 span {
+  color: var(--white);
+}
+
+.material-symbols-outlined{
+    position: relative;
+    top: 3px;
+    left: 33px;
+    color: #f8014d;
+}
+.edit-btn{
+padding-left:800px;
+gap:10px;
+
+}
+.dd-share{
+    margin-left:25px;
+    margin-top:0px;
+}
+
+
+.hero {
+  height: 100vh;
+  width: 100%;
+  
+  background-color: #4b4b55;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-position: center;
+}
+
+#blur.active{
+    filter: blur(10px);
+    z-index:1;
+}
+
+body.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+.popup{
+  background-color: #ffffff;
+  width: 420px;
+  height: 250px;
+  padding: 30px 40px;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  left: 50%;
+  top: 50%;
+  border-radius: 8px;
+  /* display: none; */
+  visibility: hidden;
+  font-family: “Poppins”,sans-serif;
+  text-align: center;
+  z-index:4;
+}
+   #popup.active {
+visibility: visible;
+transition: 0.5s;
+overflow-y: hidden;
+z-index:5;
+}
+.popup button{
+  display: block;
+  margin:  0 0 20px auto;
+
+  font-size: 30px;
+  color: #ffffff;
+  background: #f9004d;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.popup-content {
+  text-align: center;
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
+}
+
+.popup .email-input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup .send-button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #007bff; /* Set your desired button color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup .send-button:hover {
+  background-color: #0056b3; /* Set your desired button hover color */
+}
+
+.custom-modal-body {
+  padding: 20px;
+}
+
+.custom-form-group {
+  margin-bottom: 15px;
+}
+
+.custom-form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.custom-form-control {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.custom-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.custom-btn-primary {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.custom-btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.custom-modal-footer {
+  padding: 10px;
+  text-align: right;
+}
+.numbers {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+fw-button::part(internal-button) {
+  /* Your styles for the internal button go here */
+  background-color: blue;
+  color: white;
+}
+fw-button button{
+    background-color: white;
+    border-color: #f8014d;
+    color: #f8014d;
+}
+
+
+.custom-modal {
+  
+}
+
+.form-container {
+  max-width: 400px; 
+  margin: auto;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.actions {
+  text-align: center;
+}
+
+.create-task-button {
+  background-color: #163953;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+/* Hover effect */
+.create-task-button:hover {
+  background-color: #163943;
+}
+</style>
+</head>
+
+<body>
+
+
+<div class="hero" id="blur">
+    <!--  Navigation  -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            
+                        </span>
+                        <h2 class="title">RUBY</h2>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/dashboard">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Team Workspace</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/project/all">
+                        <span class="icon">
+                            <ion-icon name="chatbubble-outline"></ion-icon>
+                        </span>
+                        <span class="title">Projects</span>
+                    </a>
+                </li>
+
+                
+
+                <li>
+                    <a href="/invitations">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Invitations</span>
+                    </a>
+                </li>
+
+                
+
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title"  >Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+       
+        <!-- Main  -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="search">
+                    <label>
+                        <input type="text" placeholder="Search here">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </label>
+                </div>
+                
+
+                <div class="user" style="visibility: hidden;">
+                    <img src="" alt="">
+                </div>
+                <%= button_to "Sign_out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"} ,class: 'logout_btn' %>
+            </div>
+
+            <!-- Cards  -->
+            <div class="cardBox">
+            <% if @project %>
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_users"><%= @project.project_name %></div>
+                    </div>
+                </div>
+                <% end %>
+
+                
+                <div class="card-2">
+               
+        <div class="dropdown">
+        <span class="material-symbols-outlined">
+            overview
+            </span>
+            <button class="dropdown-btn"> <a href="<%= project_path(@project)%>/overview">Overview</a></button>
+        </div>
+
+        
+        <div class="dropdown">
+        <span class="material-symbols-outlined">
+            task
+            </span>
+            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/tasks">Tasks</a></button>
+        </div>
+
+        
+        <div class="dropdown">
+        <span class="material-symbols-outlined">
+            lists
+            </span>
+            <button class="dropdown-btn">Board</button>
+        </div>
+
+        
+        <div class="dropdown">
+        <span class="material-symbols-outlined">
+            calendar_today
+            </span>
+            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/calendar">Calendar</a></button>
+        </div>
+                 </div>
+            </div>
+
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>All Tasks</h2>
+                        <fw-button modal-trigger-id='modal-slider'  color="black">+</fw-button>
+                        
+                    </div>
+
+                    <table id="recent_book">
+                        <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Description</td>
+                                <td>Project</td>
+                                <td>Start date</td>
+                                <td>Due date</td>
+                                <td>Priority</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% @tasks.each do |task| %>
+                            <tr data-href="<%= edit_project_task_path(task.project, task) %>">
+                            <td><%= task.name %></td>
+                            <td><%= task.description %></td>
+                            <td><%= task.project_id %></td>
+                            <td><%= task.start_date.to_date %></td>
+                            <td><%= task.due_date.to_date %></td>
+                            <td><%= task.priority %></td>
+                            <td>
+          <fw-button modal-trigger-id="<%= "modal-slider-#{task.id}" %>" class="show-comments-btn"  color="black" data-task-id="<%=task.id%>" data-project-id="<%=@project.id%>" >Show</fw-button>
+          <fw-modal id="<%= "modal-slider-#{task.id}" %>" slider="true" hide-footer="true">
+            <fw-modal-title>
+              <span>Task Details</span>
+            </fw-modal-title>
+            <fw-modal-content>
+            <%= render partial: 'edit_form', locals: { task: task } %>
+            </fw-modal-content>
+          </fw-modal>
+        </td>
+                            </tr>
+                            <% end %>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <fw-modal id='modal-slider' slider='true' >
+    <fw-modal-title>
+      <span>New Task</span>
+    </fw-modal-title>
+    <fw-modal-content >
+  <%= form_with(model: [ @project, @task], local: true) do |form| %>
+    <% if @task.errors.any? %>
+      <div id="error_explanation" class="error-message">
+        <h2><%= pluralize(@task.errors.count, 'error') %> prohibited this task from being saved:</h2>
+        <ul>
+          <% @task.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :description %>
+      <%= form.text_area :description, class: 'form-control' %>
+    </div>
+
+    <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_field :start_date, class: 'form-control', id: 'start_date_picker' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :due_date %>
+      <%= form.date_field :due_date, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :user_id %>
+      <%= form.collection_select :user_id, @project.users, :id, :email, { prompt: true }, class: 'form-control' %>
+    </div>
+
+    <div class="form-group" style="display:flex; flex-direction:column;">
+      <%= form.label :priority %>
+      <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']], { prompt: 'Select Priority' }), { class: 'form-control'}, style: 'margin-top: 6px; padding: 10px;'  %>
+    </div>
+
+    <div class="actions">
+    <%= form.submit 'Create Task', class: 'create-task-button' %>
+  </div>
+  <% end %>
+
+
+  
+</fw-modal-content>
+    <fw-modal-footer>
+      <fw-button><%= link_to 'Back', dashboard_path %></fw-button>
+    </fw-modal-footer>
+  </fw-modal>
+    <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+<script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+ 
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.show-comments-btn').forEach(function(button) {  
+     
+      button.addEventListener('click', function() {
+        var taskId = this.getAttribute('data-task-id');
+        var projectId = this.getAttribute('data-project-id');
+        loadComments(taskId,projectId);
+        console.log(taskId);
+        console.log(projectId);
+      });
+    });
+
+    function loadComments(taskId,projectId) {
+      Rails.ajax({
+        url: '/projects/' + projectId + '/tasks/'+taskId,
+        type: 'GET',
+        success: function(data) {
+        console.log(data.length);
+        var commentsHTML = '';
+
+        if(data.length == 0){
+          commentsHTML += '<p>No Comments Found</p>';
+          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
+        }else {
+        data.forEach(function(comment) {
+          commentsHTML += '<div class="section">';
+          commentsHTML += '<div class="into-scroll">';
+          commentsHTML += '<div class="img"> <img src=""> </div>';
+          commentsHTML += '<div class="comment-body">';
+          commentsHTML += '<span class="name">' + comment.user_id + '</span>';
+          commentsHTML += '<span>' + comment.body + '</span>';
+          commentsHTML += ' <br>';
+          commentsHTML += ' <div class="muted">';
+          commentsHTML += ' <span>'+ comment.created_at + '</span>';
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
+        });
+
+
+
+          }
+        
+          
+        },
+        error: function() {
+          console.error('Failed to load comments.');
+        }
+      });
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+  
+  document.querySelector('fw-modal#modal-slider').open();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+document.querySelector('fw-modal#modal-slider').close();
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Open the modal
+  document.querySelectorAll('[modal-trigger-id]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var modalId = this.getAttribute('modal-trigger-id');
+      var modal = document.querySelector(`fw-modal#${modalId}`);
+      modal.open();
+    });
+  });
+
+  // Close the modal
+  document.querySelectorAll('fw-modal').forEach(function (modal) {
+    modal.addEventListener('fw-modal:close', function () {
+      this.close();
+    });
+  });
+
+  
+  document.querySelectorAll('fw-modal[slider="true"]').forEach(function (modal) {
+    modal.addEventListener('fwModalOpen', function () {
+      const taskId = modal.id.split('-')[2];
+      const form = document.getElementById(`edit-form-${taskId}`);
+      const action = form.action.replace('/tasks/', `/tasks/${taskId}/edit`);
+      form.action = action;
+    });
+  });
+});
+    </script>
+   
+</body>
+
+</html>

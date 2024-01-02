@@ -1,0 +1,12 @@
+<% if @comment.present? %>
+  <%= form_with(model: [@task, @comment], url: task_comment_path(@task, @comment), method: :patch) do |form| %>
+    <div class="field">
+      <%= form.label :body %>
+      <%= form.text_area :body, rows: 3 %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit "Update Comment" %>
+    </div>
+  <% end %>
+<% end %>
