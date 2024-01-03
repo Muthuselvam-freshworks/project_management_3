@@ -33,14 +33,17 @@ class TasksController < ApplicationController
           render :show
         end
       end
-    
-      private
-    
-      def comment_params
-        params.require(:comment).permit(:body)
+
+      def create
+        @project = Project.find(params[:project_id])
+      @task = @project.tasks.build(task_params)
+  
+      if @task.save
+        redirect_to project_tasks_path(@project), notice: 'Task was successfully created.'
+      else
+        render :new
       end
-
-
+    end
 
     def calendar 
 
@@ -51,16 +54,7 @@ class TasksController < ApplicationController
       @users = User.all
     end
   
-    def create
-        @project = Project.find(params[:project_id])
-      @task = @project.tasks.build(task_params)
-  
-      if @task.save
-        redirect_to project_tasks_path(@project), notice: 'Task was successfully created.'
-      else
-        render :new
-      end
-    end
+   
   
     def edit
         @users = User.all
@@ -80,6 +74,16 @@ class TasksController < ApplicationController
       redirect_to project_tasks_path(@project), notice: 'Task was successfully destroyed.'
     end
   
+    
+      private
+    
+      def comment_params
+        params.require(:comment).permit(:body)
+      end
+
+
+
+    
     private
   
     def set_project

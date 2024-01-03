@@ -16,12 +16,19 @@ class CommentsController < ApplicationController
   end
 
   def edit
-   
+    @project = Project.find(params[:project_id])
+    @task = @project.tasks.find(params[:task_id])
+    @comment = @task.comments.find(params[:id])
+    render partial: 'comments/edit_form', locals: { comment: @comment }
   end
 
   def update
+    @project = Project.find(params[:project_id])
+    @task = @project.tasks.find(params[:task_id])
+    @comment = @task.comments.find(params[:id])
+
     if @comment.update(comment_params)
-      redirect_to project_task_path(@project, @task), notice: 'Comment was successfully updated.'
+      redirect_to project_tasks_path(@project), notice: 'Comment was successfully updated.'
     else
       render :edit
     end
@@ -29,7 +36,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment.destroy
-    redirect_to project_task_path(@project, @task), notice: 'Comment was successfully destroyed.'
+    redirect_to project_tasks_path(@project), notice: 'Comment was successfully destroyed.'
   end
 
   private
@@ -47,6 +54,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:body).merge(user_id: current_user.id, project_id: params[:project_id], task_id: params[:task_id])
+    params.require(:comment).permit(:body).merge(user_id: current_user.id, project_id: params[:project_id], task_id: params[:task_id],id: params[:id])
   end
 end

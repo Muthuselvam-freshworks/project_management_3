@@ -899,12 +899,13 @@ fw-button button{
         type: 'GET',
         success: function(data) {
         console.log(data.length);
-        var commentsHTML = '';
+        let commentsHTML = '';
 
         if(data.length == 0){
           commentsHTML += '<p>No Comments Found</p>';
           document.querySelector('.scrollable-container').innerHTML=commentsHTML;
-        }else {
+        }
+        
         data.forEach(function(comment) {
           commentsHTML += '<div class="section">';
           commentsHTML += '<div class="into-scroll">';
@@ -915,17 +916,20 @@ fw-button button{
           commentsHTML += ' <br>';
           commentsHTML += ' <div class="muted">';
           commentsHTML += ' <span>'+ comment.created_at + '</span>';
+          commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '/edit">edit</a>';
+          commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '" data-method="delete" data-confirm="Are you sure?">delete</a>';
           commentsHTML += '</div>';
           commentsHTML += '</div>';
           commentsHTML += '</div>';
           commentsHTML += '</div>';
-          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
+          console.log('Constructed HTML:', commentsHTML); 
+         console.log(comment);
         });
 
 
 
-          }
-        
+          
+          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
           
         },
         error: function() {

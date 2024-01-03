@@ -1,5 +1,5 @@
 <% if @comment.present? %>
-  <%= form_with(model: [@task, @comment], url: task_comment_path(@task, @comment), method: :patch) do |form| %>
+  <%= form_with(model: [@task, @comment], url: project_task_comment_path(@project, @task, @comment), method: :patch) do |form| %>
     <div class="field">
       <%= form.label :body %>
       <%= form.text_area :body, rows: 3 %>
