@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link
-  rel="stylesheet"
-  href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    
     
     <style>
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
@@ -50,7 +49,7 @@ a{
 }
 .dropdown-btn:hover {
     background-color: #f8014d;
-    color: #fff;
+    color: white;
 }
 
 
@@ -130,6 +129,7 @@ body {
 }
 
 .navigation ul li a .title {
+  font-size:16px;
   position: relative;
   display: block;
   padding: 0 10px;
@@ -640,7 +640,7 @@ fw-button button{
                         <span class="icon">
                             
                         </span>
-                        <h2 class="title">RUBY</h2>
+                        <h2 class="title" style="font-size:24px;">RUBY</h2>
                     </a>
                 </li>
 
@@ -734,7 +734,7 @@ fw-button button{
         <span class="material-symbols-outlined">
             overview
             </span>
-            <button class="dropdown-btn"> <a href="<%= project_path(@project)%>/overview">Overview</a></button>
+            <button class="dropdown-btn"> <a href="<%= project_path(@project)%>/overview" style="font-size:24px; color:#f8014d;">Overview</a></button>
         </div>
 
         
@@ -742,7 +742,7 @@ fw-button button{
         <span class="material-symbols-outlined">
             task
             </span>
-            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/tasks">Tasks</a></button>
+            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/tasks" style="font-size:24px; color:#f8014d;">Tasks</a></button>
         </div>
 
         
@@ -750,7 +750,7 @@ fw-button button{
         <span class="material-symbols-outlined">
             lists
             </span>
-            <button class="dropdown-btn">Board</button>
+            <button class="dropdown-btn" style="font-size:24px; color:#f8014d;">Board</button>
         </div>
 
         
@@ -758,7 +758,7 @@ fw-button button{
         <span class="material-symbols-outlined">
             calendar_today
             </span>
-            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/calendar">Calendar</a></button>
+            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/calendar" style="font-size:24px; color:#f8014d;">Calendar</a></button>
         </div>
                  </div>
             </div>
@@ -768,12 +768,13 @@ fw-button button{
                     <div class="cardHeader">
                         <h2>All Tasks</h2>
                         <fw-button modal-trigger-id='modal-slider'  color="black">+</fw-button>
-                        
                     </div>
-
+                    
                     <table id="recent_book">
+                    <button id="delete_selected_button">Delete Selected</button>
                         <thead>
                             <tr>
+                            <td><input type="checkbox" id="check_all" /></td>
                                 <td>Name</td>
                                 <td>Description</td>
                                 <td>Project</td>
@@ -786,6 +787,7 @@ fw-button button{
                         <tbody>
                         <% @tasks.each do |task| %>
                             <tr data-href="<%= edit_project_task_path(task.project, task) %>">
+                            <td><input type="checkbox" class="check" data-task-id="<%= task.id %>" /></td>
                             <td><%= task.name %></td>
                             <td><%= task.description %></td>
                             <td><%= task.project_id %></td>
@@ -807,9 +809,8 @@ fw-button button{
                             <% end %>
                             
                         </tbody>
-                    </table>
+                    </table>  
                 </div>
-                
             </div>
         </div>
     </div>
@@ -858,7 +859,7 @@ fw-button button{
 
     <div class="form-group" style="display:flex; flex-direction:column;">
       <%= form.label :priority %>
-      <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']], { prompt: 'Select Priority' }), { class: 'form-control'}, style: 'margin-top: 6px; padding: 10px;'  %>
+      <%= form.select :priority, options_for_select([['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], { prompt: 'Select Priority' }), { class: 'form-control'}, style: 'margin-top: 6px; padding: 10px;'  %>
     </div>
 
     <div class="actions">
@@ -874,22 +875,20 @@ fw-button button{
     </fw-modal-footer>
   </fw-modal>
     <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
-<script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
-
+    <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
- 
-
-  document.addEventListener('DOMContentLoaded', function() {
+    
+   
     document.querySelectorAll('.show-comments-btn').forEach(function(button) {  
      
       button.addEventListener('click', function() {
         var taskId = this.getAttribute('data-task-id');
         var projectId = this.getAttribute('data-project-id');
         loadComments(taskId,projectId);
-        console.log(taskId);
-        console.log(projectId);
+        
       });
     });
 
@@ -898,12 +897,10 @@ fw-button button{
         url: '/projects/' + projectId + '/tasks/'+taskId,
         type: 'GET',
         success: function(data) {
-        console.log(data.length);
         let commentsHTML = '';
-
         if(data.length == 0){
           commentsHTML += '<p>No Comments Found</p>';
-          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
+          document.querySelector('.scrollable-container-'+taskId).innerHTML=commentsHTML;
         }
         
         data.forEach(function(comment) {
@@ -924,12 +921,14 @@ fw-button button{
           commentsHTML += '</div>';
           console.log('Constructed HTML:', commentsHTML); 
          console.log(comment);
+         document.querySelector('.body .scrollable-container-'+taskId).innerHTML="";
+         document.querySelector('.body .scrollable-container-'+taskId).innerHTML=commentsHTML;
         });
 
 
 
           
-          document.querySelector('.scrollable-container').innerHTML=commentsHTML;
+          
           
         },
         error: function() {
@@ -937,7 +936,7 @@ fw-button button{
         }
       });
     }
-  });
+ 
 
   document.addEventListener('DOMContentLoaded', function () {
   
@@ -976,6 +975,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+
+
+$(document).ready(function() {
+  $('#check_all').change(function() {
+    $('.check').prop('checked', $(this).prop('checked'));
+    updateDeleteButtonState();
+  });
+
+  $('.check').change(function() {
+    updateDeleteButtonState();
+  });
+
+  $('#delete_selected_button').click(function() {
+    var taskIds = $('.check:checked').map(function() {
+      return $(this).data('task-id');
+    }).get();
+
+    if (taskIds.length > 0) {
+      // Call a Sidekiq job to delete the selected tasks
+      $.ajax({
+        url: '/tasks/delete_selected',
+        method: 'post',
+        data: { task_ids: taskIds , authenticity_token: $('meta[name="csrf-token"]').attr('content') },
+        success: function(response) {
+          // Handle success, e.g., refresh the page or update the UI
+        },
+        error: function(error) {
+          // Handle error
+        }
+      });
+    }
+  });
+
+  function updateDeleteButtonState() {
+    var checkedCount = $('.check:checked').length;
+    $('#delete_selected_button').prop('disabled', checkedCount === 0);
+  }
+});
+
     </script>
    
 </body>

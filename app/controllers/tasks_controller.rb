@@ -75,6 +75,7 @@ class TasksController < ApplicationController
     end
   
     
+    
       private
     
       def comment_params
@@ -91,7 +92,7 @@ class TasksController < ApplicationController
     end
   
     def set_task
-      @task = @project.tasks.find(params[:id])
+  @task = @project.tasks.find(params[:id])
     end
   
     def task_params

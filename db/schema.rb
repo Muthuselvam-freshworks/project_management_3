@@ -80,13 +80,13 @@ ActiveRecord::Schema.define(version: 2024_01_02_113127) do
   end
 
   add_foreign_key "comments", "tasks"
-  add_foreign_key "comments", "users"
-  add_foreign_key "invitations", "projects"
+  add_foreign_key "comments", "users", on_delete: :cascade
+  add_foreign_key "invitations", "projects", on_delete: :cascade
   add_foreign_key "invitations", "users", column: "receiver_id"
   add_foreign_key "invitations", "users", column: "sender_id"
-  add_foreign_key "projects", "users", column: "created_user_id"
-  add_foreign_key "projects_users", "projects", name: "FK_pu"
+  add_foreign_key "projects", "users", column: "created_user_id", on_delete: :cascade
+  add_foreign_key "projects_users", "projects", name: "FK_pu", on_delete: :cascade
   add_foreign_key "projects_users", "users", name: "FK_up"
-  add_foreign_key "tasks", "projects"
+  add_foreign_key "tasks", "projects", on_delete: :cascade
   add_foreign_key "tasks", "users"
 end
