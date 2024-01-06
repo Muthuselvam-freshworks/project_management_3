@@ -4,4 +4,5 @@ class Project < ApplicationRecord
     validates :project_name, presence: true, length: { maximum: 255 }
     has_many :invitations
     has_many :tasks, dependent: :destroy
+    has_many :todos, dependent: :destroy
 end

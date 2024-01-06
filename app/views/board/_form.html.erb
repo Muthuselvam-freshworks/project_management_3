@@ -1,0 +1,21 @@
+<%= form_with(model: Todo.new, url: project_todos_path(@project)) do |form| %>
+    <%= form.hidden_field :status, value: status %>
+    
+    <div>
+      <%= form.label :todo %>
+      <%= form.text_field :name %>
+    </div>
+  
+    <div>
+      <%= form.label :tags %>
+      <%= form.text_field :tags %>
+    </div>
+  
+    <div>
+      <%= form.label :due_date %>
+      <%= form.date_field :due_date %>
+    </div>
+  
+    <%= form.submit "Add Todo" %>
+  <% end %>
+  

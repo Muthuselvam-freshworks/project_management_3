@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_02_113127) do
+ActiveRecord::Schema.define(version: 2024_01_06_093906) do
 
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body"
@@ -65,6 +65,20 @@ ActiveRecord::Schema.define(version: 2024_01_02_113127) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
+  create_table "todos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "tags"
+    t.date "due_date"
+    t.bigint "project_id", null: false
+    t.bigint "created_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status"
+    t.integer "position"
+    t.index ["created_user_id"], name: "index_todos_on_created_user_id"
+    t.index ["project_id"], name: "index_todos_on_project_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -89,4 +103,6 @@ ActiveRecord::Schema.define(version: 2024_01_02_113127) do
   add_foreign_key "projects_users", "users", name: "FK_up"
   add_foreign_key "tasks", "projects", on_delete: :cascade
   add_foreign_key "tasks", "users"
+  add_foreign_key "todos", "projects"
+  add_foreign_key "todos", "users", column: "created_user_id"
 end

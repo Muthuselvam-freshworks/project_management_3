@@ -1,0 +1,32 @@
+<!-- app/views/todos/edit.html.erb -->
+
+<h1>Edit Todo</h1>
+
+<%= form_for [@project, @todo] do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :tags %>
+    <%= f.text_field :tags %>
+  </div>
+
+  <div>
+    <%= f.label :due_date %>
+    <%= f.date_field :due_date %>
+  </div>
+
+  <div>
+    <%= f.label :status %>
+    <%= f.select :status, ['Todo', 'In Progress', 'Completed'] %>
+  </div>
+
+  <div>
+    <%= f.submit 'Update Todo' %>
+  </div>
+<% end %>
+<%= link_to 'Delete', project_todo_path(@project, @todo), method: :delete, data: { confirm: 'Are you sure?' } %>
+<a href="/projects/<%= @project.id %>/board">Cancel</a>
+

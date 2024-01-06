@@ -1,0 +1,11 @@
+<!-- app/views/todos/new.html.erb -->
+
+<!-- Your HTML form and modal structure goes here -->
+<div id="newTodoModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- Your form content goes here -->
+      <%= render 'form', todo: @todo %>
+    </div>
+  </div>
+</div>

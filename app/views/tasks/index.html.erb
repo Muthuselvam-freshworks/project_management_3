@@ -750,7 +750,7 @@ fw-button button{
         <span class="material-symbols-outlined">
             lists
             </span>
-            <button class="dropdown-btn" style="font-size:24px; color:#f8014d;">Board</button>
+            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/board" style="font-size:24px; color:#f8014d;">Board</a></button>
         </div>
 
         
@@ -906,7 +906,7 @@ fw-button button{
         data.forEach(function(comment) {
           commentsHTML += '<div class="section">';
           commentsHTML += '<div class="into-scroll">';
-          commentsHTML += '<div class="img"> <img src=""> </div>';
+          commentsHTML += '<div class="img"> <fw-avatar mode="error" name="<%=@users.find(1).first_name %> <%= current_user.last_name%>"></fw-avatar> </div>';
           commentsHTML += '<div class="comment-body">';
           commentsHTML += '<span class="name">' + comment.user_id + '</span>';
           commentsHTML += '<span>' + comment.body + '</span>';
@@ -977,7 +977,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-$(document).ready(function() {
   $('#check_all').change(function() {
     $('.check').prop('checked', $(this).prop('checked'));
     updateDeleteButtonState();
@@ -1012,7 +1011,7 @@ $(document).ready(function() {
     var checkedCount = $('.check:checked').length;
     $('#delete_selected_button').prop('disabled', checkedCount === 0);
   }
-});
+
 
     </script>
    

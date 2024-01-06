@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
     <style>
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
 
@@ -371,7 +372,22 @@ body {
 }
 .recentCustomers table tr:hover td h4 span {
   color: var(--white);
-}</style>
+}
+
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+
+
+</style>
 </head>
 
 <body>
@@ -456,6 +472,9 @@ body {
                 <div class="user" style="visibility: hidden;">
                     <img src="" alt="">
                 </div>
+                <fw-tooltip content="<%= current_user.email%>" placement="bottom">
+                <fw-avatar mode="error" name="<%= current_user.first_name%> <%= current_user.last_name%>" style="position: absolute; top:5px; right:122px;"></fw-avatar>
+                </fw-tooltip>
                 <%= button_to "Sign_out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"} ,class: 'logout_btn' %>
             </div>
 
@@ -574,6 +593,8 @@ body {
        
 
     </script>
+    <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
 </body>
 
 </html>
