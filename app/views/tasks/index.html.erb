@@ -932,14 +932,14 @@ button[disabled]{
           commentsHTML += ' <br>';
           commentsHTML += ' <div class="muted">';
           commentsHTML += ' <span>'+ comment.created_at + '</span>';
-          commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '/edit">edit</a>';
-          commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '" data-method="delete" data-confirm="Are you sure?">delete</a>';
+          if (comment.user_id == <%= current_user.id %>) {
+    commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '/edit">edit</a>';
+    commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '" data-method="delete" data-confirm="Are you sure?">delete</a>';
+  }
           commentsHTML += '</div>';
           commentsHTML += '</div>';
           commentsHTML += '</div>';
           commentsHTML += '</div>';
-          console.log('Constructed HTML:', commentsHTML); 
-         console.log(comment);
          document.querySelector('.body .scrollable-container-'+taskId).innerHTML="";
          document.querySelector('.body .scrollable-container-'+taskId).innerHTML=commentsHTML;
         });
@@ -968,7 +968,7 @@ document.querySelector('fw-modal#modal-slider').close();
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  // Open the modal
+
   document.querySelectorAll('[modal-trigger-id]').forEach(function (button) {
     button.addEventListener('click', function () {
       var modalId = this.getAttribute('modal-trigger-id');
@@ -977,7 +977,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Close the modal
+ 
   document.querySelectorAll('fw-modal').forEach(function (modal) {
     modal.addEventListener('fw-modal:close', function () {
       this.close();
