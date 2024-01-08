@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
   end
   def show
     @project = Project.find(params[:id])
+    @team_members = @project.users
   @invitation = @project.invitations.build
   end
 
@@ -42,7 +43,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  
+ 
   def destroy
     @project = Project.find(params[:id])
     @project.destroy

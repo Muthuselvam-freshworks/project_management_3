@@ -464,9 +464,11 @@ body {
 
                 <div class="search">
                     <label>
-                        <input type="text" placeholder="Search here">
+                        <input type="text" placeholder="Search here" id="search-input">
                         <ion-icon name="search-outline"></ion-icon>
+                        
                     </label>
+                    <button id="search-button">Search</button>
                 </div>
 
                 <div class="user" style="visibility: hidden;">
@@ -504,7 +506,7 @@ body {
 
                 <div class="card">
                     <div>
-                        <div class="numbers" id="today_login">0</div>
+                        <div class="numbers" id="today_login"><%=@tasks_count_assigned_to_me%></div>
                         <div class="cardName">Task Assigned To Me</div>
                     </div>
 
@@ -597,4 +599,41 @@ body {
     <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
 </body>
 
+<script>
+$(document).ready(function() {
+  $('#search-button').on('click', function() {
+    var query = $('#search-input').val();
+    $.ajax({
+      url: '/dashboard/search',
+      type: 'GET',
+      dataType: 'json', 
+      data: { query: query },
+      success: function(data) {
+  console.log(data);
+  $('#recent_book tbody').empty();
+  data.created_projects.forEach(function(project) {
+    var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+    newRow += '<td id="name">' + project.project_name + '</td>';
+    newRow += '<td id="date">' + project.description + '</td>';
+    newRow += '<td><span class="status delivered">Active</span></td>';
+    newRow += '</tr>';
+    $('#recent_book tbody').append(newRow);
+  });
+  $('#recent_cus tbody').empty();
+  data.joined_projects.forEach(function(project) {
+    var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+    newRow += '<td id="name">' + project.project_name + '</td>';
+    newRow += '<td id="date">' + project.description + '</td>';
+    newRow += '<td><span class="status delivered">Active</span></td>';
+    newRow += '</tr>';
+    $('#recent_cus tbody').append(newRow);
+  });
+},
+      error: function() {
+        alert('Error fetching projects.');
+      }
+    });
+  });
+});
+</script>
 </html>

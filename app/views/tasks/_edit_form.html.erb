@@ -243,55 +243,56 @@ a:hover {
     
             <!-- Edit Form -->
             <%= form_with(model: [ @project, task], local: true, id: "edit-form-#{task.id}") do |form| %>
-              <% if task.errors.any? %>
-                <div id="error_explanation" class="error-message">
-                  <h2><%= pluralize(task.errors.count, 'error') %> prohibited this task from being saved:</h2>
-                  <ul>
-                    <% task.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                    <% end %>
-                  </ul>
-                </div>
-              <% end %>
-    
-              <div class="form-group">
-                <%= form.label :name %>
-                <%= form.text_field :name , class: 'form-control'%>
-              </div>
-    
-              <div class="form-group">
-                <%= form.label :description %>
-                <%= form.text_area :description, class: 'form-control' %>
-              </div>
-    
-              <div class="field">
-    <%= form.label :start_date %>
-    <%= form.date_field :start_date, class: 'form-control' %>
+  <% if task.errors.any? %>
+    <div id="error_explanation" class="error-message">
+      <h2><%= pluralize(task.errors.count, 'error') %> prohibited this task from being saved:</h2>
+      <ul>
+        <% task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
+  <% end %>
 
-              <div class="form-group">
-                <%= form.label :due_date %>
-                <%= form.date_field :due_date, class: 'form-control' %>
-              </div>
-    
-              <div class="form-group" style="display:flex; flex-direction:column;">
-                <%= form.label :user_id %>
-                <%= form.collection_select :user_id, @users, :id, :email, prompt: true , class: 'form-control' , style: 'margin-top: 6px; padding: 10px;'%>
-              </div>
-    
-              <div class="form-group" style="display:flex; flex-direction:column;">
-                <%= form.label :priority %>
-                <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']]) , class: 'form-control', style: 'margin-top: 6px; padding: 10px;' %>
-              </div>
-    
-              <div class="form-group">
-                <%= form.submit 'Edit Task', class: 'create-task-button'%>
-              </div>
-              <div class="form-group">
-              <%= link_to 'Delete Task', project_task_path(@project, task), method: :delete, data: { confirm: 'Are you sure you want to delete this task?' }, class: 'delete-button' %>
-              </div>
-            <% end %>
-          </div>
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: 'form-control', required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_field :start_date, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :due_date %>
+    <%= form.date_field :due_date, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group" style="display:flex; flex-direction:column;">
+    <%= form.label :user_id %>
+    <%= form.collection_select :user_id, @users, :id, :email, { prompt: true }, { class: 'form-control', required: true, style: 'margin-top: 6px; padding: 10px;' } %>
+  </div>
+
+  <div class="form-group" style="display:flex; flex-direction:column;">
+    <%= form.label :priority %>
+    <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']], { prompt: 'Select Priority' }), { class: 'form-control', required: true, style: 'margin-top: 6px; padding: 10px;' } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.submit 'Save Task', class: 'create-task-button', required: true %>
+  </div>
+
+  <div class="form-group">
+    <%= link_to 'Delete Task', project_task_path(@project, task), method: :delete, data: { confirm: 'Are you sure you want to delete this task?' }, class: 'delete-button' %>
+  </div>
+<% end %>
+</div>
          
           <fw-accordion expanded=true>
   <fw-accordion-title>Comments</fw-accordion-title>
@@ -307,9 +308,9 @@ a:hover {
          </div>
          
          <div class="writing">
-         <%= form_with(model: [@project, Task.find(task.id), @comment], url: project_task_comments_path(@project, Task.find(task.id)), method: :post) do |form| %>
+         <%= form_with(model: [@project, Task.find(task.id), @comment], url: project_task_comments_path(@project, Task.find(task.id)), method: :post, html: { onsubmit: 'reloadPage()' }) do |form| %>
           <div class="field">
-            <%= form.text_area :body, rows: 3, class: 'textarea', autofocus: true, spellcheck: false %>
+            <%= form.text_area :body, rows: 3, class: 'textarea', autofocus: true, spellcheck: false , required: true%>
           </div>
       
           <div class="footer">
@@ -324,7 +325,11 @@ a:hover {
           </fw-accordion-body>
           </fw-accordion>
 
-     
+          <script>
+          function reloadPage() {
+            location.reload();
+          }
+        </script>
           </body>
 
           

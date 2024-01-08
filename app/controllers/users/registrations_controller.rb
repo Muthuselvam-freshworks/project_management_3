@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  before_action :set_minimum_password_length
+  before_action :configure_sign_up_params, only: [:create]
+
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:first_name, :last_name])
+  end
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
@@ -10,10 +16,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-   def create
-    super
-    UserMailer.acknowledgment_email(@user).deliver_now
-   end
+  def create
+    super do |resource|
+      if resource.persisted?
+        UserMailer.acknowledgment_email(resource).deliver_now
+      end
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -60,4 +69,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  # Sets minimum password length to show to user
+  def set_minimum_password_length
+    if devise_mapping && devise_mapping.validatable?
+      @minimum_password_length = resource_class.password_length.min
+    end
+  end
 end

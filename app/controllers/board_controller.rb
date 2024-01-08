@@ -2,12 +2,13 @@ class BoardController < ApplicationController
   before_action :set_project
   before_action :set_todo, only: [:show, :edit, :update, :destroy, :move_to_in_progress, :move_to_completed]
 
-  def index
-    @todos_todo = @project.todos.where(status: 'Todo')
-    @todos_in_progress = @project.todos.where(status: 'In Progress')
-    @todos_completed = @project.todos.where(status: 'Completed')
-    @todo = @project.todos.new
-  end
+ 
+    def index
+      @todo_tasks = @project.tasks.where(status: 'todo')
+      @in_progress_tasks = @project.tasks.where(status: 'In Progress')
+      @done_tasks = @project.tasks.where(status: 'Completed')
+    end
+  
 
   def show
     # Show individual todo details

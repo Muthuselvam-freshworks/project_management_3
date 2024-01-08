@@ -561,6 +561,18 @@ z-index:5;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+
 </style>
 </head>
 
@@ -717,12 +729,23 @@ z-index:5;
             <div class="details">
             <div class="recentOrders">
                 <div class="cardHeader">
-
+                <h2>Project Details</h2>
                 </div>
+                <h3 style="margin:10px;">Name:&nbsp; &nbsp;&nbsp;&nbsp;<%= @project.project_name %></h3>
+                <h3 style="margin:10px;">Description: &nbsp; &nbsp;&nbsp; <%= @project.description %></h3>
+                <h3 style="margin:10px;">Owner:    &nbsp;  &nbsp;&nbsp;   <%= @project.created_user_id %></h3>
+                <h3 style="margin:10px;">Created Date:  &nbsp;&nbsp;&nbsp;<%= @project.created_at.strftime('%Y-%m-%d') %></h3>
                 </div>
                 <div class="recentCustomers">
                 <div class="cardHeader">
+                <h2>Team Members</h2>
                 </div>
+                <ul>
+  <% @team_members.each do |user| %>
+    <h3 style="margin:10px;">
+      <%= user.first_name %> - <%= user.email %>
+    </h3>
+  <% end %>
                 </div>
                 </div>
                 

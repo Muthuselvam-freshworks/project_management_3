@@ -15,38 +15,35 @@
   
     <div class="field">
       <%= form.label :name %>
-      <%= form.text_field :name %>
+      <%= form.text_field :name, required: true %>
     </div>
   
     <div class="field">
       <%= form.label :description %>
-      <%= form.text_area :description %>
+      <%= form.text_area :description, required: true %>
     </div>
 
     <div class="field">
-    <%= form.label :start_date %>
-    <%= form.text_field :start_date, class: 'form-control', id: 'start_date_picker' %>
+      <%= form.label :start_date %>
+      <%= form.text_field :start_date, class: 'form-control', id: 'start_date_picker', required: true %>
     </div>
   
     <div class="field">
       <%= form.label :due_date %>
-      <%= form.date_field :due_date %>
+      <%= form.date_field :due_date, required: true %>
     </div>
   
     <div class="field">
       <%= form.label :user_id %>
-      <%= form.collection_select :user_id, @project.users, :id, :email, prompt: true %>
+      <%= form.collection_select :user_id, @project.users, :id, :email, { prompt: true }, required: true %>
     </div>
 
     <div class="field">
-    <%= form.label :priority %>
-    <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']]) %>
-  </div>
+      <%= form.label :priority %>
+      <%= form.select :priority, options_for_select([['High', 'high'], ['Medium', 'medium'], ['Low', 'low']]), required: true %>
+    </div>
   
     <div class="actions">
       <%= form.submit %>
     </div>
-  <% end %>
-  
-
-
+<% end %>

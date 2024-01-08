@@ -56,8 +56,7 @@ class TodosController < ApplicationController
     end
 
     def move_todo
-        @todo = Todo.find(params[:id])
-        @todo.update(position: params[:position])
+        @todo = Task.find(params[:id])
         @todo.update(status: params[:status])
         head :ok
       end

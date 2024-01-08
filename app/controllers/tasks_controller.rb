@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
     before_action :set_project
     before_action :set_task, only: [:show, :edit, :update, :destroy]
+    before_action :update_all_background_colors, only: [:index]
   
     def index
       @tasks = @project.tasks
@@ -8,7 +9,7 @@ class TasksController < ApplicationController
       @task = @project.tasks.build
       @users = User.all
       @comments = @task.comments.order(created_at: :desc)
-      
+      @assignable_users = assignable_users
       @comment = Comment.new
     end
   
@@ -45,6 +46,14 @@ class TasksController < ApplicationController
       end
     end
 
+    def assignable_users
+      if @project.belongs_to_current_user?(current_user)
+        @project.users + [current_user]
+      else
+        @project.users
+      end
+    end
+
     def calendar 
 
     end
@@ -53,7 +62,9 @@ class TasksController < ApplicationController
       @task = @project.tasks.build
       @users = User.all
     end
-  
+   
+
+    
    
   
     def edit
@@ -74,6 +85,14 @@ class TasksController < ApplicationController
       redirect_to project_tasks_path(@project), notice: 'Task was successfully destroyed.'
     end
   
+    def search
+      @tasks = Task.where('name LIKE ?', "%#{params[:query]}%")
+
+      respond_to do |format|
+        format.html { render :index } # Render the index view for HTML requests
+        format.json { render json: @tasks } # Render the search results as JSON for AJAX requests
+      end
+    end
     
     
       private
@@ -82,20 +101,30 @@ class TasksController < ApplicationController
         params.require(:comment).permit(:body)
       end
 
+   
 
+      def update_all_background_colors
+        @project.tasks.each(&:update_background_color)
+      end
 
     
-    private
+   
   
     def set_project
       @project = Project.find(params[:project_id])
     end
-  
-    def set_task
-  @task = @project.tasks.find(params[:id])
+   def set_task
+    if params[:id] == 'search'
+      @tasks = Task.where('name LIKE ?', "%#{params[:query]}%")
+    else
+      @task = Task.find(params[:id])
     end
-  
+  rescue ActiveRecord::RecordNotFound
+    flash[:error] = "Task not found."
+    redirect_to project_tasks_path(@project)
+  end
+
     def task_params
-      params.require(:task).permit(:name, :description, :due_date, :user_id, :priority)
+      params.require(:task).permit(:name, :description, :start_date, :due_date, :user_id, :priority)
     end
 end

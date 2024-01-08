@@ -741,6 +741,17 @@ h1 {
 .task-hover {
   border: 3px
 }
+
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -897,59 +908,39 @@ h1 {
         <div class='project-column-heading' >
           <h2 class='project-column-heading__title'>ToDo</h2><button class='project-column-heading__options'></button>
         </div>
-        <% @todos_todo.each do |todo| %>
+        <% @todo_tasks.each do |todo| %>
         <div class='task' draggable='true' ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
-          <div class='task__tags'><span class='task__tag task__tag--copyright'><%= todo.tags %></span><button class='task__options'></button></div>
           <p><%= todo.name %></p>
           <div class='task__stats'>
-            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date %></time></span>
-            <a href="/projects/<%= @project.id %>/todos/<%= todo.id %>/edit"><fw-icon class='task__owner' name="edit" size="18" color="black"></fw-icon></a>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
         </div>
-        <% end %>
-        
-        <div class='task' draggable='false'>
-        <fw-button modal-trigger-id='todo'>Add</fw-button>
-        </div>
-        
-               
-                
+        <% end %>         
       </div>
       <div class='project-column'  ondrop="drop(event, 'In Progress')" ondragover="allowDrop(event)" ><div class='project-column-heading'>
           <h2 class='project-column-heading__title'>In Progress</h2><button class='project-column-heading__options'></button>
         </div>
-        <% @todos_in_progress.each do |todo| %>
+        <% @in_progress_tasks.each do |todo| %>
         <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
-          <div class='task__tags'><span class='task__tag task__tag--design'><%= todo.tags %></span><button class='task__options'></button></div>
           <p><%= todo.name %></p>
           <div class='task__stats'>
-            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date %></time></span>
-            <a href="/projects/<%= @project.id %>/todos/<%= todo.id %>/edit"><fw-icon class='task__owner' name="edit" size="18" color="black"></fw-icon></a>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
         </div>
         <% end %>
-        <div class='task' draggable='false'>
-        <fw-button modal-trigger-id='inProgress'>Add</fw-button>
-      </div>
         
         </div>
       <div class='project-column' ondrop="drop(event, 'Completed')" ondragover="allowDrop(event)"><div class='project-column-heading'>
           <h2 class='project-column-heading__title'>Completed</h2><button class='project-column-heading__options'></button>
         </div>
-        <% @todos_completed.each do |todo| %>
+        <% @done_tasks.each do |todo| %>
         <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%= @project.id%>)" >
-          <div class='task__tags'><span class='task__tag task__tag--copyright'><%= todo.tags %></span><button class='task__options'></button></div>
           <p><%= todo.name %></p>
           <div class='task__stats'>
-            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date %></time></span>
-            <a href="/projects/<%= @project.id %>/todos/<%= todo.id %>/edit"><fw-icon class='task__owner' name="edit" size="18" color="black"></fw-icon></a>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
         </div>
         <% end %>
-        <div class='task' draggable='false'>
-        <fw-button modal-trigger-id='completed'>Add</fw-button>
-        </div>
-      
     </div>
   </main>
   

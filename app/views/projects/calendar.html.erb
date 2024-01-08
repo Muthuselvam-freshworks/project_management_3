@@ -575,6 +575,29 @@ z-index:5;
   text-overflow: ellipsis;
 }
 
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+button.reload-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add border radius */
+    cursor: pointer; /* Add cursor pointer on hover */
+  }
+
+  button.reload-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
 </style>
 </head>
 
@@ -647,7 +670,7 @@ z-index:5;
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
-                        <span class="title"  >Sign Out</span>
+                        <span class="title">Sign Out</span>
                     </a>
                 </li>
             </ul>
@@ -732,7 +755,7 @@ z-index:5;
       var calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: { center: 'timeGridWeek,dayGridMonth' },
         initialView: 'dayGridMonth',
-        events: <%= raw Project.find(params[:id]).tasks.map { |task| { title: task.name, start: task.start_date.strftime('%Y-%m-%d'), end: task.due_date.strftime('%Y-%m-%d') } }.to_json %>
+        events: <%= raw Project.find(params[:id]).tasks.map { |task| { title: task.name, start: task.start_date.strftime('%Y-%m-%d'), end: task.due_date.strftime('%Y-%m-%d'), backgroundColor: task.background_color , borderColor: task.background_color } }.to_json %>
       });
       calendar.render();
 
@@ -777,6 +800,17 @@ z-index:5;
     localStorage.removeItem('pageReloaded');
   });
 });
+
+$(document).ready(function() {
+    // Check if the calendar div is empty
+    if ($('#calendar').is(':empty')) {
+      var reloadButton = $('<button>').text('Click To View Calendar').addClass('reload-button');
+      $('#calendar').append(reloadButton);
+      reloadButton.click(function() {
+        location.reload();
+      });
+    }
+  });
   </script>
 </body>
 

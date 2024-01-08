@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+  }
+  root to: 'devise/registrations#new'
   get 'board/index'
   mount Sidekiq::Web => '/sidekiq'
 
@@ -7,9 +11,9 @@ Rails.application.routes.draw do
   get 'comments/destroy'
   get 'comments/_form'
   get 'dashboard/index'
-  devise_for :users, controllers: {
-  registrations: 'users/registrations',
-}
+  
+
+
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   resources :projects
   get '/project/new', to: 'projects#create'
@@ -18,6 +22,9 @@ Rails.application.routes.draw do
   get '/projects/:project_id/tasks/:id' ,to: 'tasks#show'
   post 'tasks/delete_selected', to: 'dashboard#delete_selected'
   get '/projects/:id/board',to: 'board#index'
+  get '/projects/:id/tasks/search', to: 'tasks#search'
+  get '/dashboard/search', to: 'dashboard#search'
+
   resources :invitations, only: [:index, :create, :destroy]
   resources :projects do
     resources :invitations, only: [:new, :create, :index, :destroy]
@@ -65,8 +72,16 @@ end
       end
     end
   end
+
+  resources :projects do
+    collection do
+      get 'search'
+    end
+  end
   
 
   get '/projects/:id/calendar', to: 'projects#calendar'
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+ 
+  
 end

@@ -619,10 +619,38 @@ fw-button button{
   border-radius: 5px; 
   cursor: pointer;
 }
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
 
-/* Hover effect */
+
 .create-task-button:hover {
   background-color: #163943;
+}
+.delete-button-btn {
+  background-color: #d11a2a;
+  float:right;
+  height:32px;
+  margin-right:90px;
+  margin-top:-32px;
+  color: white; 
+  padding: 0px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+button:disabled,
+button[disabled]{
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
 </head>
@@ -703,12 +731,7 @@ fw-button button{
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
 
-                <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
+               
                 
 
                 <div class="user" style="visibility: hidden;">
@@ -771,13 +794,12 @@ fw-button button{
                     </div>
                     
                     <table id="recent_book">
-                    <button id="delete_selected_button">Delete Selected</button>
+                    <button id="delete_selected_button" class="delete-button-btn"  disabled>Delete Selected</button>
                         <thead>
                             <tr>
                             <td><input type="checkbox" id="check_all" /></td>
                                 <td>Name</td>
                                 <td>Description</td>
-                                <td>Project</td>
                                 <td>Start date</td>
                                 <td>Due date</td>
                                 <td>Priority</td>
@@ -790,7 +812,6 @@ fw-button button{
                             <td><input type="checkbox" class="check" data-task-id="<%= task.id %>" /></td>
                             <td><%= task.name %></td>
                             <td><%= task.description %></td>
-                            <td><%= task.project_id %></td>
                             <td><%= task.start_date.to_date %></td>
                             <td><%= task.due_date.to_date %></td>
                             <td><%= task.priority %></td>
@@ -808,6 +829,7 @@ fw-button button{
                             </tr>
                             <% end %>
                             
+                            
                         </tbody>
                     </table>  
                 </div>
@@ -819,57 +841,55 @@ fw-button button{
     <fw-modal-title>
       <span>New Task</span>
     </fw-modal-title>
-    <fw-modal-content >
-  <%= form_with(model: [ @project, @task], local: true) do |form| %>
-    <% if @task.errors.any? %>
-      <div id="error_explanation" class="error-message">
-        <h2><%= pluralize(@task.errors.count, 'error') %> prohibited this task from being saved:</h2>
-        <ul>
-          <% @task.errors.full_messages.each do |message| %>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+    <fw-modal-content>
+    <%= form_with(model: [ @project, @task], local: true) do |form| %>
+      <% if @task.errors.any? %>
+        <div id="error_explanation" class="error-message">
+          <h2><%= pluralize(@task.errors.count, 'error') %> prohibited this task from being saved:</h2>
+          <ul>
+            <% @task.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+  
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: 'form-control', required: true %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :description %>
+        <%= form.text_area :description, class: 'form-control', required: true %>
+      </div>
+  
+      <div class="field">
+        <%= form.label :start_date %>
+        <%= form.date_field :start_date, class: 'form-control', id: 'start_date_picker', required: true %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :due_date %>
+        <%= form.date_field :due_date, class: 'form-control', required: true %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :Assignee %>
+        <%= form.collection_select :user_id, @assignable_users, :id, :email, { prompt: true }, { class: 'form-control', required: true } %>
+      </div>
+  
+      <div class="form-group" style="display:flex; flex-direction:column;">
+        <%= form.label :priority %>
+        <%= form.select :priority, options_for_select([['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], { prompt: 'Select Priority' }), { class: 'form-control', required: true }, style: 'margin-top: 6px; padding: 10px;'  %>
+      </div>
+  
+      <div class="actions">
+        <%= form.submit 'Create Task', class: 'create-task-button' %>
       </div>
     <% end %>
-
-    <div class="form-group">
-      <%= form.label :name %>
-      <%= form.text_field :name, class: 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :description %>
-      <%= form.text_area :description, class: 'form-control' %>
-    </div>
-
-    <div class="field">
-    <%= form.label :start_date %>
-    <%= form.date_field :start_date, class: 'form-control', id: 'start_date_picker' %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :due_date %>
-      <%= form.date_field :due_date, class: 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :user_id %>
-      <%= form.collection_select :user_id, @project.users, :id, :email, { prompt: true }, class: 'form-control' %>
-    </div>
-
-    <div class="form-group" style="display:flex; flex-direction:column;">
-      <%= form.label :priority %>
-      <%= form.select :priority, options_for_select([['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], { prompt: 'Select Priority' }), { class: 'form-control'}, style: 'margin-top: 6px; padding: 10px;'  %>
-    </div>
-
-    <div class="actions">
-    <%= form.submit 'Create Task', class: 'create-task-button' %>
-  </div>
-  <% end %>
-
-
+  </fw-modal-content>
   
-</fw-modal-content>
     <fw-modal-footer>
       <fw-button><%= link_to 'Back', dashboard_path %></fw-button>
     </fw-modal-footer>
@@ -908,7 +928,6 @@ fw-button button{
           commentsHTML += '<div class="into-scroll">';
           commentsHTML += '<div class="img"> <fw-avatar mode="error" name="<%=@users.find(1).first_name %> <%= current_user.last_name%>"></fw-avatar> </div>';
           commentsHTML += '<div class="comment-body">';
-          commentsHTML += '<span class="name">' + comment.user_id + '</span>';
           commentsHTML += '<span>' + comment.body + '</span>';
           commentsHTML += ' <br>';
           commentsHTML += ' <div class="muted">';
