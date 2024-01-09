@@ -1,0 +1,98 @@
+<!-- app/views/todos/edit.html.erb -->
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <style>
+  @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+  * {
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  a{
+      color:inherit;
+      text-decoration:none;
+  }
+  label{
+    gap:5px;
+  }
+
+input[type=text], select,input[type=date] {
+    padding:10px;
+    height:40px;
+}
+
+input[type=submit]{
+    background-color:#50C878;
+    height:32px;
+    color: white; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    width:122px;
+}
+.delete-todo{
+    background-color:#FF3333 ;
+    height:32px;
+    color: white; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    width:122px;
+    padding:6px 33px;
+}
+
+  </style>
+  </head>
+  <body>
+
+<fw-modal id='large' icon="agent" size="large" hide-footer="true" is-open="true" has-close-icon-button="false">
+<fw-modal-title>
+<h1>Edit Todo</h1>
+<a href="/projects/<%= @project.id %>/board" style="position:absolute; right:48px;"><fw-icon name="cross" size=18 color="red" ></fw-icon></a>
+</fw-modal-title>
+<fw-modal-content>
+<%= form_for [@project, @todo] do |f| %>
+    <div style=" display: flex;flex-direction: column; gap: 7px;margin: 16px;">
+      <%= f.label :name %>
+      <%= f.text_field :name , required: true%>
+    </div>
+  
+    <div style=" display: flex;flex-direction: column; gap: 7px;margin: 16px;">
+      <%= f.label :tags %>
+      <%= f.text_field :tags , required: true%>
+    </div>
+  
+    <div style=" display: flex;flex-direction: column; gap: 7px;margin: 16px;">
+      <%= f.label :due_date %>
+      <%= f.date_field :due_date, required: true %>
+    </div>
+  
+    <div style=" display: flex;flex-direction: column; gap: 7px;margin: 16px;">
+      <%= f.label :status %>
+      <%= f.select :status, ['Todo', 'In Progress', 'Completed'] , required: true%>
+    </div>
+  
+    <div style=" display: flex;flex-direction: row; gap: 7px;margin: 16px;">
+      <%= f.submit 'Update Todo' %>
+      <%= link_to 'Delete', project_todo_path(@project, @todo), method: :delete, data: { confirm: 'Are you sure?' } ,class: 'delete-todo'%>
+    </div>
+  <% end %>
+  
+  
+</fw-modal-content>
+</fw-modal>
+
+</body>
+</html>

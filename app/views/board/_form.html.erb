@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <style>
+  @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+  * {
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  a{
+      color:inherit;
+      text-decoration:none;
+  }
+  label{
+    gap:5px;
+  }
+
+input[type=text], select,input[type=date] {
+    padding:10px;
+    height:40px;
+}
+
+input[type=submit]{
+    background-color:#50C878;
+    height:32px;
+    color: white; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    width:122px;
+}
+.delete-todo{
+    background-color:#FF3333 ;
+    height:32px;
+    color: white; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    width:122px;
+    padding:6px 33px;
+}
+
+  </style>
+  </head>
+  <body>
+
+<%= form_with(model: Todo.new, url: project_todos_path(@project)) do |form| %>
+    <%= form.hidden_field :status, value: status %>
+    
+    <div>
+      <%= form.label :todo %>
+      <%= form.text_field :name , required: true%>
+    </div>
+  
+    <div>
+      <%= form.label :tags %>
+      <%= form.text_field :tags , required: true%>
+    </div>
+  
+    <div>
+      <%= form.label :due_date %>
+      <%= form.date_field :due_date, required: true %>
+    </div>
+  
+    <%= form.submit "Add Todo" %>
+  <% end %>
+  </body>
+  </html>
