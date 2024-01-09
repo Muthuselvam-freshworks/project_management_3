@@ -454,7 +454,7 @@ body.stop-scrolling {
   border-radius: 8px;
   /* display: none; */
   visibility: hidden;
-  font-family: “Poppins”,sans-serif;
+  font-family: "Poppins",sans-serif;
   text-align: center;
   z-index:4;
 }
@@ -542,7 +542,7 @@ z-index:5;
 }
 
 .custom-btn-primary {
-  background-color: #007bff;
+  background-color: #f8014d;
   color: #fff;
 }
 
@@ -575,6 +575,7 @@ z-index:5;
 
 </style>
 </head>
+
 
 <body>
 <div class="popup" id="popup">
@@ -679,14 +680,21 @@ z-index:5;
                     <div>
                         <div class="numbers" id="total_users"><%= @project.project_name %></div>
                     </div>
+                    <div class="setting" style="display: flex; gap: 10px;align-items: center; justify-content: center; position: fixed;left: 1380px;">
                     <% if @project.created_user_id == current_user.id %>
-                    <a href="<%= edit_project_path(@project)%>">
-                    <span class="material-symbols-outlined edit-btn" style="margin-right:30px;"> edit</span></a>
+                    <fw-button modal-trigger-id='small' color="black">Share</fw-button>
+                    <fw-button color="black">
+                    <fw-icon slot="before-label" size="16" name="edit"></fw-icon>
+                    <a href="<%= edit_project_path(@project)%>">Edit Project</a>
+                    </fw-button>
+                   
+                    <fw-button color="black">
+                    <fw-icon slot="before-label" size="16" name="delete"></fw-icon>
                     <%= link_to 'Delete Project', @project, method: :delete, data: { confirm: 'Are you sure?' } %>
-                    <div class="dropdown dd-share">
-             <fw-button modal-trigger-id='small' color="black">Share</fw-button>
-</div>
+                  </fw-button>
+            
 <% end %>
+</div>
                 </div>
                 <% end %>
 

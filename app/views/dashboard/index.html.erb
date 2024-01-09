@@ -170,7 +170,7 @@ body {
 
 .search label ion-icon {
   position: absolute;
-  top: 0;
+  top: 10px;
   left: 10px;
   font-size: 1.2rem;
 }
@@ -462,13 +462,13 @@ body {
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
 
-                <div class="search">
+                <div class="search" style="display: flex;  align-items: center;justify-content: center; gap: 5px;">
                     <label>
                         <input type="text" placeholder="Search here" id="search-input">
                         <ion-icon name="search-outline"></ion-icon>
                         
                     </label>
-                    <button id="search-button">Search</button>
+                    <button id="search-button" style="height: 40px; width: 77px;  border: 1px solid #999; border-radius: 40px;">Search</button>
                 </div>
 
                 <div class="user" style="visibility: hidden;">
@@ -534,106 +534,105 @@ body {
                         <h2>Your Projects</h2>
                         <a href="<%= new_project_path %>" class="btn">+</a>
                     </div>
-
                     <table id="recent_book">
-                        <thead>
-                            <tr>
-                                <td>Project Name</td>
-                                <td>Description</td>
-                                <td>Status</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <% @projects_created_by_user.each do |project| %>
-                          <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
-                            <td id="name"><%= project.project_name %></td>
-                            <td id="date"><%= project.description %></td>
-                            <td>
-                              <span class="status delivered">Active</span>
-                            </td>
-                          </tr>
-                        <% end %>
-                      </tbody>
-                    </table>
-                </div>
-                <div class="recentCustomers">
-                    <div class="cardHeader">
-                        <h2>Joined Projects</h2>
-                    </div>
-
-                    <table id="recent_cus">
                     <thead>
-                    <tr>
-                        <td>Project Name</td>
-                        <td>Description</td>
-                        <td>Status</td>
-                    </tr>
-                </thead>
-                <tbody>
-                <% @projects_joined_by_user.each do |project| %>
-                    <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
-                    <td id="name"><%=  project.project_name %></td>
-                    <td id="date"><%= project.description %></td>
-                    <td>
-                      <span class="status delivered">Active</span>
-                    </td>
-                    </tr>
+                        <tr>
+                            <td>Project Name</td>
+                            <td>Description</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% @projects_created_by_user.each do |project| %>
+                      <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
+                        <td id="name"><%= project.project_name %></td>
+                        <td id="date"><%= project.description %></td>
+                        <td>
+                          <span class="status delivered">Active</span>
+                        </td>
+                      </tr>
                     <% end %>
-                </tbody>
-                    </table>
+                  </tbody>
+                </table>
+            </div>
+            <div class="recentCustomers">
+                <div class="cardHeader">
+                    <h2>Joined Projects</h2>
                 </div>
+
+                <table id="recent_cus">
+                <thead>
+                <tr>
+                    <td>Project Name</td>
+                    <td>Description</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+            <% @projects_joined_by_user.each do |project| %>
+                <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
+                <td id="name"><%=  project.project_name %></td>
+                <td id="date"><%= project.description %></td>
+                <td>
+                  <span class="status delivered">Active</span>
+                </td>
+                </tr>
+                <% end %>
+            </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
-    
 
-  
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script>
-       
 
-    </script>
-    <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script>
+   
+
+</script>
+<script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+<script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
 </body>
 
 <script>
 $(document).ready(function() {
-  $('#search-button').on('click', function() {
-    var query = $('#search-input').val();
-    $.ajax({
-      url: '/dashboard/search',
-      type: 'GET',
-      dataType: 'json', 
-      data: { query: query },
-      success: function(data) {
-  console.log(data);
-  $('#recent_book tbody').empty();
-  data.created_projects.forEach(function(project) {
-    var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
-    newRow += '<td id="name">' + project.project_name + '</td>';
-    newRow += '<td id="date">' + project.description + '</td>';
-    newRow += '<td><span class="status delivered">Active</span></td>';
-    newRow += '</tr>';
-    $('#recent_book tbody').append(newRow);
-  });
-  $('#recent_cus tbody').empty();
-  data.joined_projects.forEach(function(project) {
-    var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
-    newRow += '<td id="name">' + project.project_name + '</td>';
-    newRow += '<td id="date">' + project.description + '</td>';
-    newRow += '<td><span class="status delivered">Active</span></td>';
-    newRow += '</tr>';
-    $('#recent_cus tbody').append(newRow);
-  });
+$('#search-button').on('click', function() {
+var query = $('#search-input').val();
+$.ajax({
+  url: '/dashboard/search',
+  type: 'GET',
+  dataType: 'json', 
+  data: { query: query },
+  success: function(data) {
+console.log(data);
+$('#recent_book tbody').empty();
+data.created_projects.forEach(function(project) {
+var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+newRow += '<td id="name">' + project.project_name + '</td>';
+newRow += '<td id="date">' + project.description + '</td>';
+newRow += '<td><span class="status delivered">Active</span></td>';
+newRow += '</tr>';
+$('#recent_book tbody').append(newRow);
+});
+$('#recent_cus tbody').empty();
+data.joined_projects.forEach(function(project) {
+var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+newRow += '<td id="name">' + project.project_name + '</td>';
+newRow += '<td id="date">' + project.description + '</td>';
+newRow += '<td><span class="status delivered">Active</span></td>';
+newRow += '</tr>';
+$('#recent_cus tbody').append(newRow);
+});
 },
-      error: function() {
-        alert('Error fetching projects.');
-      }
-    });
-  });
+  error: function() {
+    alert('Error fetching projects.');
+  }
+});
+});
 });
 </script>
 </html>
