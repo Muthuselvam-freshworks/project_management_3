@@ -682,24 +682,31 @@ button[disabled]{
                 </li>
 
                 <li>
-                    <a href="">
+                    <a href="<%= project_path(@project)%>/overview">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
-                        <span class="title">Team Workspace</span>
+                        <span class="title">Overview</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="/project/all">
+                    <a href="<%= project_path(@project)%>/board">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
-                        <span class="title">Projects</span>
+                        <span class="title">Board</span>
                     </a>
                 </li>
 
-                
+                <li>
+                    <a href="<%= project_path(@project)%>/calendar">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title"  >Calendar</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="/invitations">
@@ -712,14 +719,7 @@ button[disabled]{
 
                 
 
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title"  >Sign Out</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
 
@@ -794,7 +794,7 @@ button[disabled]{
                     </div>
                     
                     <table id="recent_book">
-                    <button id="delete_selected_button" class="delete-button-btn"  disabled>Delete Selected</button>
+                    <button id="delete_selected_button" class="delete-button-btn"   disabled>Delete Selected</button>
                         <thead>
                             <tr>
                             <td><input type="checkbox" id="check_all" /></td>
@@ -802,6 +802,7 @@ button[disabled]{
                                 <td>Description</td>
                                 <td>Start date</td>
                                 <td>Due date</td>
+                                <td>Status</td>
                                 <td>Priority</td>
                                 <td>Action</td>
                             </tr>
@@ -814,6 +815,7 @@ button[disabled]{
                             <td><%= task.description %></td>
                             <td><%= task.start_date.to_date %></td>
                             <td><%= task.due_date.to_date %></td>
+                            <td><%= task.status %></td>
                             <td><%= task.priority %></td>
                             <td>
           <fw-button modal-trigger-id="<%= "modal-slider-#{task.id}" %>" class="show-comments-btn"  color="black" data-task-id="<%=task.id%>" data-project-id="<%=@project.id%>" >Show</fw-button>
@@ -930,8 +932,9 @@ button[disabled]{
           commentsHTML += '<div class="comment-body">';
           commentsHTML += '<span>' + comment.body + '</span>';
           commentsHTML += ' <br>';
+          commentsHTML += ' <span class="muted-font">'+ new Date(comment.created_at).toLocaleDateString()+ '</span>';
           commentsHTML += ' <div class="muted">';
-          commentsHTML += ' <span>'+ comment.created_at + '</span>';
+          
           if (comment.user_id == <%= current_user.id %>) {
     commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '/edit">edit</a>';
     commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '" data-method="delete" data-confirm="Are you sure?">delete</a>';

@@ -1,12 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrations</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <style>
+    
+    body {
+      background-color:rgba(18, 52, 77, 0.5);
+    }
+    form {
+      margin-top:100px;
+      background-color: #fff;
+    }
+    .text-indigo-600{
+      color:#000;
+    }
+    .bg-indigo-600{
+      background-color:#50C878;
+    }
+
+    .top{
+      margin-top:100px;
+    }
+    .login{
+      position: absolute;
+    left: 45%;
+    margin: 13px 0px;
+    }
+
+    textarea{
+        border:1px solid #999;
+    }
+    
+    input[type=submit]{
+    background-color:#50C878;
+    height:32px;
+    color: white; 
+    font-size: 16px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer;
+    width:100%;
+}
+
+.delete-button-btn {
+  background-color:#DC143C;
+  height:32px;
+  color: white; 
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+  width:100%;
+}
+    </style>
+    
+</head>
+<body>
+
+
+<div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg top">
+   
+
 <% if @comment.present? %>
-  <%= form_with(model: [@task, @comment], url: project_task_comment_path(@project, @task, @comment), method: :patch) do |form| %>
+  <%= form_with(model: [@task, @comment], url: project_task_comment_path(@project, @task, @comment), method: :patch , html: { class: 'mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8' }) do |form| %>
+    <p class="text-center text-lg font-medium">Edit Comment</p>
     <div class="field">
       <%= form.label :body %>
-      <%= form.text_area :body, rows: 3 ,required: true%>
+      <%= form.text_area :body, rows: 3 ,required: true, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm'%>
     </div>
 
     <div class="actions">
-      <%= form.submit "Update Comment" %>
+      <%= form.submit "Save" %>
     </div>
+    <button class="delete-button-btn "><a href="<%= project_path(@project)%>/tasks">Cancel</a></button>
   <% end %>
 <% end %>
+</div>
+</div>
+<script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+<script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+</body>
+</html>

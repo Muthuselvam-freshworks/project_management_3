@@ -588,7 +588,7 @@ z-index:5;
 button.reload-button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50; /* Green background color */
+    background-color: #f8014d; /* Green background color */
     color: white; /* White text color */
     border: none; /* Remove border */
     border-radius: 5px; /* Add border radius */
@@ -596,7 +596,7 @@ button.reload-button {
   }
 
   button.reload-button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    opacity:0.8; /* Darker green on hover */
   }
 </style>
 </head>
@@ -635,24 +635,31 @@ button.reload-button {
                 </li>
 
                 <li>
-                    <a href="">
+                    <a href="<%= project_path%>/overview">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
-                        <span class="title">Team Workspace</span>
+                        <span class="title">Overview</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="/project/all">
+                    <a href="<%= project_path%>/tasks">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
-                        <span class="title">Projects</span>
+                        <span class="title">Tasks</span>
                     </a>
                 </li>
 
-                
+                <li>
+                    <a href="<%= project_path%>/board">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Board</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="/invitations">
@@ -665,14 +672,7 @@ button.reload-button {
 
                 
 
-                <li>
-                    <a href="">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title">Sign Out</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
 
@@ -684,12 +684,7 @@ button.reload-button {
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
 
-                <div class="search">
-                    <label>
-                        <input type="text" placeholder="Search here">
-                        <ion-icon name="search-outline"></ion-icon>
-                    </label>
-                </div>
+               
 
                 <div class="user" style="visibility: hidden;">
                     <img src="" alt="">

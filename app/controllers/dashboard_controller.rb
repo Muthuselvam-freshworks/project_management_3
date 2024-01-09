@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
     @projects_joined_by_user = current_user.joined_projects
     @all_projects = (@projects_created_by_user + @projects_joined_by_user).uniq
     @tasks_count_assigned_to_me = Task.where(user_id: current_user.id).count
+    @tasks_count_overdue_assigned_to_me = Task.where(user_id: current_user.id).where('due_date < ?', Date.today).count
       end
 
       def delete_selected
