@@ -82,7 +82,6 @@ body {
   width: 300px;
   height: 100%;
   background: var(--red);
-  border-left: 10px solid var(--red);
   transition: 0.5s;
   overflow: hidden;
 }
@@ -663,7 +662,7 @@ h1 {
   padding: 1rem;
   border-radius: 8px;
   width: 100%;
-  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
   margin-bottom: 1rem;
   border: 3px dashed  transparent;
 }
@@ -673,7 +672,7 @@ h1 {
   border-color: rgba(162, 179, 207, .2)!important;
 }
 
-.task p {
+.task h3 {
   font-size: 15px;
   margin: 1.2rem 0;
 }
@@ -736,7 +735,7 @@ h1 {
   right: 0;
   bottom: 0;
 }
-12:48
+
 .task__owner {
   width: 25px;
   height: 25px;
@@ -761,6 +760,30 @@ h1 {
   border-radius: 5px; 
   cursor: pointer;
 }
+
+#logout_btn{
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.navigation.active {
+  width: 80px;
+}
+.navigation.active span.title{
+  display:none;
+}
+
 </style>
 </head>
 
@@ -784,12 +807,12 @@ h1 {
                         <span class="icon">
                             
                         </span>
-                        <h2 class="title">RUBY</h2>
+                        <h2 class="title" id="title" style="font-size:20px;">PROJECT MANAGEMENT</h2>
                     </a>
                 </li>
 
                 <li>
-                    <a href="/dashboard">
+                    <a href="/dashboard" style="display:flex;margin-left:10px;">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -798,53 +821,53 @@ h1 {
                 </li>
 
                 <li>
-                    <a href="<%= project_path%>/overview">
+                    <a href="<%= project_path%>/overview" style="display:flex;margin-left:10px;">
                         <span class="icon">
-                            <ion-icon name="people-outline"></ion-icon>
+                            <ion-icon name="apps-outline"></ion-icon>
                         </span>
                         <span class="title">Overview</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="<%= project_path%>/tasks">
+                    <a href="<%= project_path%>/tasks" style="display:flex;margin-left:10px;">
                         <span class="icon">
-                            <ion-icon name="chatbubble-outline"></ion-icon>
+                            <ion-icon name="list-outline"></ion-icon>
                         </span>
                         <span class="title">Tasks</span>
                     </a>
                 </li>
 
-                
+                <li>
+                    <a href="<%= project_path%>/board" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Board</span>
+                    </a>
+                </li>
 
                 
 
                 
 
                 <li>
-                    <a href="<%= project_path%>/calendar">
+                    <a href="<%= project_path%>/calendar" style="display:flex;margin-left:10px;">
                         <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
+                            <ion-icon name="calendar-number-outline"></ion-icon>
                         </span>
-                        <span class="title"  >Calendar</span>
+                        <span class="title" >Calendar</span>
                     </a>
                 </li>
-                <li>
-                    <a href="/invitations">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                        </span>
-                        <span class="title">Invitations</span>
-                    </a>
-                </li>
+                
             </ul>
         </div>
 
        
         <!-- Main  -->
         <div class="main">
-            <div class="topbar">
-                <div class="toggle">
+            <div class="topbar" >
+                <div class="toggle" onclick="toggleNavigation()">
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
 
@@ -853,7 +876,7 @@ h1 {
                 <div class="user" style="visibility: hidden;">
                     <img src="" alt="">
                 </div>
-                <%= button_to "Sign_out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"} ,class: 'logout_btn' %>
+                <%= button_to "Sign Out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"}, data: { confirm: "Are you sure you want to sign out?" } ,class: 'logout_btn' ,id: 'logout_btn'%>
             </div>
 
             <!-- Cards  -->
@@ -868,39 +891,7 @@ h1 {
                 <% end %>
 
                 
-                <div class="card-2">
                
-        <div class="dropdown">
-        <span class="material-symbols-outlined">
-            overview
-            </span>
-            <button class="dropdown-btn"> <a href="<%= project_path%>/overview">Overview</a></button>
-        </div>
-
-        
-        <div class="dropdown">
-        <span class="material-symbols-outlined">
-            task
-            </span>
-            <button class="dropdown-btn"><a href="<%= project_path%>/tasks">Tasks</a></button>
-        </div>
-
-        
-        <div class="dropdown">
-        <span class="material-symbols-outlined">
-            lists
-            </span>
-            <button class="dropdown-btn"><a href="<%= project_path%>/board">Board</a></button>
-        </div>
-
-        
-        <div class="dropdown">
-        <span class="material-symbols-outlined">
-            calendar_today
-            </span>
-            <button class="dropdown-btn"><a href="<%= project_path(@project) %>/calendar">Calendar</a></button>
-        </div>
-                 </div>
             </div>
             <div class="details">
             <div class="recentOrders">
@@ -915,7 +906,7 @@ h1 {
         </div>
         <% @todo_tasks.each do |todo| %>
         <div class='task' draggable='true' ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
-          <p><%= todo.name %></p>
+          <h3><%= todo.name %></h3>
           <div class='task__stats'>
             <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
@@ -927,7 +918,7 @@ h1 {
         </div>
         <% @in_progress_tasks.each do |todo| %>
         <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
-          <p><%= todo.name %></p>
+          <h3><%= todo.name %></h3>
           <div class='task__stats'>
             <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
@@ -940,7 +931,7 @@ h1 {
         </div>
         <% @done_tasks.each do |todo| %>
         <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%= @project.id%>)" >
-          <p><%= todo.name %></p>
+          <h3><%= todo.name %></h3>
           <div class='task__stats'>
             <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
           </div>
@@ -961,22 +952,18 @@ h1 {
         
     </div>
     
-    <fw-modal id='todo' title-text="Welcome">
-    <%= render 'form', status: 'Todo' %>
-        </fw-modal>
-  <fw-modal id='inProgress' title-text="Welcome">
-            <%= render 'form', status: 'In Progress' %>
- </fw-modal>
-<fw-modal id='completed' title-text="Welcome">
-        <%= render 'form', status: 'Completed' %>
-</fw-modal>
-  
+    
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     
     <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
   <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
   <script>
+
+
+var currentPagePath = window.location.pathname;
+console.log(currentPagePath);
+$('.navigation ul li a[href="' + currentPagePath + '"]').parent().addClass('hovered');
   function allowDrop(ev) {
     ev.preventDefault();
   }
@@ -1007,6 +994,42 @@ h1 {
     });
   }
 </script>
+<script>
+
+function toggleNavigation(){
+  location.reload();
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+  sidebarValue = !sidebarValue;
+  localStorage.setItem('sidebar',sidebarValue);
+}
+
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+
+if (sidebarValue) {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.toggle('active');
+  main.classList.toggle('active');
+  title.classList.toggle('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+}else {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.remove('active');
+  main.classList.remove('active');
+  title.classList.remove('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+
+}
+
+</script>
+
 </body>
 
 </html>
