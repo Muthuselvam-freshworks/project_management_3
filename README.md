@@ -24,5 +24,5 @@ Things you may want to cover:
 
 * Deployment instructions
 
-* ...
+* Rspec framework
 >>>>>>> upstream/main
