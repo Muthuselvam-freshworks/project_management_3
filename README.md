@@ -1,28 +1,71 @@
-<<<<<<< HEAD
-# project_management_3
-=======
-# README
+# Project Management App (Ruby on Rails)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A web-based project management application built with Ruby on Rails. This app allows teams to collaborate, manage projects, and track tasks.
 
-Things you may want to cover:
+## Table of Contents
 
-* Ruby version
+- [Models](#models)
+  - [User](#user)
+  - [Invitation](#invitation)
+  - [Project](#project)
+  - [Task](#task)
+  - [Comment](#comment)
+- [Controllers](#controllers)
+  - [UsersController](#userscontroller)
+  - [InvitationsController](#invitationscontroller)
+  - [ProjectsController](#projectscontroller)
+  - [TasksController](#taskscontroller)
+  - [CommentsController](#commentscontroller)
+- [Features](#features)
 
-* System dependencies
+## Models
 
-* Configuration
+### User
 
-* Database creation
+Represents a user of the application.
 
-* Database initialization
+### Invitation
 
-* How to run the test suite
+Handles invitations for users to collabrate projects.
 
-* Services (job queues, cache servers, search engines, etc.)
+### Project
 
-* Deployment instructions
+Represents a project with associated tasks and comments.
 
-* Rspec framework
->>>>>>> upstream/main
+### Task
+
+Represents a task within a project.
+
+### Comment
+
+Represents a comment associated with a task of a project.
+
+## Controllers
+
+### UsersController
+
+Manages user-related actions such as registration and login.
+
+### InvitationsController
+
+Handles user invitations to join projects.
+
+### ProjectsController
+
+Manages project-related actions, including creation, updates, and deletions.
+
+### TasksController
+
+Handles task-related actions within projects.
+
+### CommentsController
+
+Manages comments on tasks and projects.
+
+## Features
+
+- User authentication and authorization.
+- Project creation, modification, and deletion.
+- Task creation, assignment, and status updates.
+- Commenting on tasks and projects.
+- Inviting users to join projects.
