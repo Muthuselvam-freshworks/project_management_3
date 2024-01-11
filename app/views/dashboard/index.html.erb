@@ -320,7 +320,7 @@ body {
 .details .recentOrders table tr td:nth-child(3) {
   text-align: start;
 }
-.status.delivered {
+.status.Pending {
   padding: 2px 4px;
   background: #8de02c;
   color: var(--white);
@@ -329,7 +329,7 @@ body {
   font-weight: 500;
 }
 
-.status.return {
+.status.Completed {
   padding: 2px 4px;
   background: #f00;
   color: var(--white);
@@ -447,7 +447,7 @@ body {
                         <ion-icon name="search-outline"></ion-icon>
                         
                     </label>
-                    <button id="search-button" style="height: 40px; width: 150px;  border: 1px solid #999; border-radius: 40px;">Search</button>
+                    <button id="search-button" style="height: 40px; width: 150px;  border: 1px solid #999; border-radius: 40px;cursor:pointer;">Search</button>
                 </div>
 
                 <div class="user" style="visibility: hidden;">
@@ -474,7 +474,7 @@ body {
 
                 <div class="card">
                     <div>
-                        <div class="numbers" id="total_active"><%=@all_projects.count%></div>
+                        <div class="numbers" id="total_active"><%=@all_active_projects.count%></div>
                         <div class="cardName">Active Projects</div>
                     </div>
 
@@ -524,10 +524,10 @@ body {
                     <tbody>
                     <% @projects_created_by_user.each do |project| %>
                       <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
-                        <td id="name"><%= project.project_name %></td>
-                        <td id="date"><%= project.description %></td>
+                      <td id="name"><%= truncate(project.project_name.split(' ').first, length: 20) %></td>
+                      <td id="date"><%= truncate(project.description.split(' ').first, length: 20) %></td>
                         <td>
-                          <span class="status delivered">Active</span>
+                          <span class="status <%=project.status%>"><%=project.status%></span>
                         </td>
                       </tr>
                     <% end %>
@@ -553,7 +553,7 @@ body {
                 <td id="name"><%=  project.project_name %></td>
                 <td id="date"><%= project.description %></td>
                 <td>
-                  <span class="status delivered">Active</span>
+                <span class="status <%=project.status%>"><%=project.status%></span>
                 </td>
                 </tr>
                 <% end %>

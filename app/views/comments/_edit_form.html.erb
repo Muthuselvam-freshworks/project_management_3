@@ -71,7 +71,7 @@
     <p class="text-center text-lg font-medium">Edit Comment</p>
     <div class="field">
       <%= form.label :body %>
-      <%= form.text_area :body, rows: 3 ,required: true, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm'%>
+      <%= form.text_area :body, rows: 3 ,required: true, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm' ,  pattern: "^[^\s]+(\s+[^\s]+)*$" , title: "No spaces in beginning and ending" %>
     </div>
 
     <div class="actions">

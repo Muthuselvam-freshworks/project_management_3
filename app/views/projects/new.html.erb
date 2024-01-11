@@ -88,8 +88,6 @@ input[type=submit]{
 <%= form_with(model: @project, url: projects_path, method: :post) do |form| %>
   <% if @project.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
-
       <ul>
         <% @project.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -97,15 +95,14 @@ input[type=submit]{
       </ul>
     </div>
   <% end %>
-
   <div class="field">
     <%= form.label :project_name %>
-    <%= form.text_field :project_name , required: true%>
+    <%= form.text_field :project_name , required: true  , pattern: "^[^\s]+(\s+[^\s]+)*$" , title: "No spaces in beginning and ending" %>
   </div>
 
   <div class="field">
     <%= form.label :description %>
-    <%= form.text_area :description, required: true %>
+    <%= form.text_area :description, required: true  %>
   </div>
 
   <div class="actions">

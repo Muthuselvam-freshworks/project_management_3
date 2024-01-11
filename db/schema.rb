@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_08_154353) do
+ActiveRecord::Schema.define(version: 2024_01_11_164005) do
 
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "body"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2024_01_08_154353) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "created_user_id"
+    t.string "status", default: "Pending"
     t.index ["created_user_id"], name: "index_projects_on_created_user_id"
   end
 

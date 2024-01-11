@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   get '/projects/:id/board',to: 'board#index'
   get '/projects/:id/tasks/search', to: 'tasks#search'
   get '/dashboard/search', to: 'dashboard#search'
-
+  get '/projects/:id/mark_as_complete', to: 'projects#mark_as_complete'
   resources :invitations, only: [:index, :create, :destroy]
   resources :projects do
     resources :invitations, only: [:new, :create, :index, :destroy]
@@ -76,6 +76,12 @@ end
   resources :projects do
     collection do
       get 'search'
+    end
+  end
+
+  resources :projects do
+    member do
+      patch 'mark_as_complete'
     end
   end
   

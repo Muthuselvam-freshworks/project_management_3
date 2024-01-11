@@ -16,6 +16,9 @@
     padding: 0;
     box-sizing: border-box;
   }
+  body{
+    background-color:#8898A5;
+  }
   
   a{
       color:inherit;
@@ -23,6 +26,16 @@
   }
   label{
    margin:25px 0px;
+  }
+
+  form{
+    background-color:#fff;
+    width:40%;
+    height:480px;
+    position:absolute;
+    top:270px;
+    left:500px;
+    border-radius:10px;
   }
 
 input[type=email], input[type=password] {
@@ -53,43 +66,55 @@ input[type=submit]{
     width:122px;
     padding:6px 33px;
 }
+
+form h2{
+  padding:25px 50px;
+}
+form .actions{
+  padding:25px 50px;
+}
 .field{
-  padding:15px 0px;
+  padding:15px 50px;
 }
 .field label{
   padding:15px 0px;
 }
 .remember{
-  padding:15px 0px;
+  padding:15px 50px;
 }
 .forgot-pass{
-  padding: 27px 0px;
+  padding: 27px 5px;
   float: right;
 }
 .signup-btn{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
   </style>
   </head>
   <body>
-  <fw-modal id='large' icon="agent" size="standard" hide-footer="true" is-open="true" has-close-icon-button="false">
-<fw-modal-title>
-<h2>Log in</h2>
-</fw-modal-title>
-<fw-modal-content>
+  
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+
+
+  <% if flash[:alert].present? %>
+  <script>
+    alert("<%= j flash[:alert] %>");
+  </script>
+<% end %>
+  <h2>Log in</h2>
+  
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" , placeholder: "Enter email" %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" , placeholder: "Enter email" ,required:true %>
   </div>
 
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" , placeholder: 'Enter password'%>
+    <%= f.password_field :password, autocomplete: "current-password" , placeholder: 'Enter password' , required:true%>
     <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
   <%= link_to "Forgot your password?", new_password_path(resource_name) , class: 'forgot-pass'%><br />
 <% end %>
@@ -105,12 +130,11 @@ input[type=submit]{
   <div class="actions">
     <%= f.submit "Log in" %>
   </div>
-<% end %>
-<%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+  <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
   <%= link_to "Not a member? Sign up", new_registration_path(resource_name) , class: 'signup-btn'%>
 <% end %>
-</fw-modal-content>
-</fw-modal>
+<% end %>
+
 
 </body>
 

@@ -1,20 +1,27 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+# Ruby version
 ruby '2.6.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.8', '>= 5.2.8.1'
-# Use sqlite3 as the database for Active Record
+
+# Using mysql gem 
 gem 'mysql2'
 
+# Using devise for user authentication
 gem 'devise'
 
+# Using sidekiq for bulk delete of tasks
 gem 'sidekiq'
 
+# Using rspec
 group :development, :test do
   gem 'rspec-rails'
 end
+
+
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets

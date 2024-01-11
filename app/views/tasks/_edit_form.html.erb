@@ -321,7 +321,7 @@ a:hover {
          <div class="writing">
          <%= form_with(model: [@project, Task.find(task.id), @comment], url: project_task_comments_path(@project, Task.find(task.id)), method: :post, html: { onsubmit: 'reloadPage()' }) do |form| %>
           <div class="field">
-            <%= form.text_area :body, rows: 3, class: 'textarea', autofocus: true, spellcheck: false , required: true%>
+            <%= form.text_area :body, rows: 3, class: 'textarea', autofocus: true, spellcheck: false , required: true ,  pattern: "^[^\s]+(\s+[^\s]+)*$" , title: "No spaces in beginning and ending" , placeholder: "comment something..."%>
           </div>
       
           <div class="footer">

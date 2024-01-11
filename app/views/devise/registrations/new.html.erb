@@ -48,17 +48,17 @@
 
       <div class="field">
         <%= f.label :first_name %><br />
-        <%= f.text_field :first_name, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter first name', autofocus: true , required: true %>
+        <%= f.text_field :first_name, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter first name', autofocus: true , required: true , pattern: "[^\s]+" , title: "No spaces allowed"%>
       </div>
 
       <div class="field">
         <%= f.label :last_name %><br />
-        <%= f.text_field :last_name, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter last name' , required: true%>
+        <%= f.text_field :last_name, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter last name' , required: true , pattern: "[^\s]+" , title: "No spaces allowed"%>
       </div>
 
       <div class="field">
         <%= f.label :email %><br />
-        <%= f.email_field :email, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter email', autocomplete: 'email' , required: true%>
+        <%= f.email_field :email, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter email', autocomplete: 'email' , required: true , pattern: '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$'%>
       </div>
 
       <div class="field">
@@ -66,12 +66,12 @@
         <% if @minimum_password_length %>
         <em>(<%= @minimum_password_length %> characters minimum)</em>
         <% end %><br />
-        <%= f.password_field :password, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter password', autocomplete: 'new-password' , required: true%>
+        <%= f.password_field :password, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Enter password', autocomplete: 'new-password' , required: true , pattern: '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$' , title: "Minimum six characters, at least one letter and one number"%>
       </div>
 
       <div class="field">
         <%= f.label :password_confirmation %><br />
-        <%= f.password_field :password_confirmation, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Confirm password', autocomplete: 'new-password' , required: true%>
+        <%= f.password_field :password_confirmation, class: 'w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm', placeholder: 'Confirm password', autocomplete: 'new-password' , required: true , pattern: '^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$', title: "Minimum six characters, at least one letter and one number" %>
       </div>
 
       <div class="actions">
