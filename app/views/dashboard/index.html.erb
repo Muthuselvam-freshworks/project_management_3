@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <style>
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+* {
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+:root {
+  --red: #f9004d;
+  --white: #fff;
+  --gray: #f5f5f5;
+  --black1: #222;
+  --black2: #999;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.navigation {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  background: var(--red);
+  transition: 0.5s;
+  overflow: hidden;
+}
+.navigation.active {
+  width: 80px;
+}
+
+.navigation ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+ .navigation ul li {
+  position: relative;
+  width: 100%;
+  list-style: none;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+} 
+
+ .navigation ul li:hover,
+.navigation ul li.hovered {
+  background-color: var(--white);
+} 
+
+.navigation ul li:nth-child(1) {
+  margin-bottom: 40px;
+  pointer-events: none;
+}
+
+.navigation ul li a {
+  position: relative;
+  display: block;
+  width: 100%;
+  /* display: flex; */
+  text-decoration: none;
+  color: var(--white);
+}
+.navigation ul li:hover a,
+.navigation ul li.hovered a {
+  color: var(--red);
+}
+
+.navigation ul li a .icon {
+  position: relative;
+  display: block;
+  min-width: 60px;
+  height: 60px;
+  line-height: 75px;
+  text-align: center;
+}
+.navigation ul li a .icon ion-icon {
+  font-size: 1.75rem;
+}
+
+.navigation ul li a .title {
+  position: relative;
+  display: block;
+  padding: 0 0px;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+
+.main {
+  position: absolute;
+  width: calc(100% - 300px);
+  left: 300px;
+  min-height: 100vh;
+  background: var(--white);
+  transition: 0.5s;
+}
+.main.active {
+  width: calc(100% - 80px);
+  left: 80px;
+}
+
+.navigation.active {
+  width: 80px;
+  border-left:0px;
+}
+
+.navigation.active span.title{
+  display:none;
+}
+
+
+
+.topbar {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 10px;
+  border-bottom: 1px solid #ccc; 
+}
+
+.toggle {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+  width: 400px;
+  margin: 0 10px;
+}
+
+.search label {
+  position: relative;
+  width: 100%;
+}
+
+.search label input {
+  width: 100%;
+  height: 40px;
+  border-radius: 40px;
+  padding: 5px 20px;
+  padding-left: 35px;
+  font-size: 18px;
+  outline: none;
+  border: 1px solid var(--black2);
+}
+
+.search label ion-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1.2rem;
+}
+
+.user {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.user img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+}
+
+.cardBox .card .numbers {
+  position: relative;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--red);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--red);
+}
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+/* ================== Order Details List ============== */
+.details {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
+  /* margin-top: 10px; */
+}
+
+.details .recentOrders {
+  position: relative;
+  /* display: grid; */
+  min-height: 750px;
+  background: var(--white);
+  padding: 20px;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+
+.details .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.cardHeader h2 {
+  font-weight: 600;
+  color: var(--red);
+}
+.cardHeader .btn {
+  position: relative;
+  padding: 5px 10px;
+  background: var(--red);
+  text-decoration: none;
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.details table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.details table thead td {
+  font-weight: 600;
+}
+.details .recentOrders table tr {
+  border-bottom: none;
+  color: var(--black1);
+}
+.details .recentOrders table tr:last-child {
+  border-bottom: none;
+}
+.details .recentOrders table tbody tr:hover {
+  background: var(--red);
+  color: var(--white);
+}
+.details .recentOrders table tr td {
+  padding: 10px;
+}
+.details .recentOrders table tr td:last-child {
+  text-align: start;
+}
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: start;
+}
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: start;
+}
+.status.Pending {
+  padding: 2px 4px;
+  background: #8de02c;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status.Completed {
+  padding: 2px 4px;
+  background: #f00;
+  color: var(--white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.recentCustomers {
+  position: relative;
+  /* display: grid; */
+  min-height: 500px;
+  padding: 20px;
+  background: var(--white);
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+}
+.recentCustomers .imgBx {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  overflow: hidden;
+}
+.recentCustomers .imgBx img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recentCustomers table tr td {
+  padding: 12px 10px;
+}
+.recentCustomers table tr td h4 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2rem;
+}
+.recentCustomers table tr td h4 span {
+  font-size: 14px;
+  color: var(--black2);
+}
+.recentCustomers table tr:hover {
+  background: var(--red);
+  color: var(--white);
+}
+.recentCustomers table tr:hover td h4 span {
+  color: var(--white);
+}
+
+.logout_btn {
+  background-color: #d11a2a;
+  float:right;
+  color: white; 
+  padding: 10px 20px;
+  font-size: 16px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+
+
+
+</style>
+</head>
+
+<body>
+    <!--  Navigation  -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            
+                        </span>
+                        <h2 class="title" id="title" style="font-size:20px;">PROJECT MANAGEMENT</h2>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/dashboard" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/invitations" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Invitations</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- Main  -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle" onclick="toggleNavigation()">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                <div class="search" style="display: flex;  align-items: center;justify-content: center; gap: 5px;">
+                    <label>
+                        <input type="text" placeholder="Search here" id="search-input">
+                        <ion-icon name="search-outline"></ion-icon>
+                        
+                    </label>
+                    <button id="search-button" style="height: 40px; width: 150px;  border: 1px solid #999; border-radius: 40px;cursor:pointer;">Search</button>
+                </div>
+
+                <div class="user" style="visibility: hidden;">
+                    <img src="" alt="">
+                </div>
+                <fw-tooltip content="<%= current_user.email%>" placement="bottom">
+                <fw-avatar mode="error" name="<%= current_user.first_name%> <%= current_user.last_name%>" style="position: absolute; top:5px; right:122px;"></fw-avatar>
+                </fw-tooltip>
+                <%= button_to "Sign Out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"}, data: { confirm: "Are you sure you want to sign out?" } ,class: 'logout_btn' %>
+            </div>
+
+            <!-- Cards  -->
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_users"><%=@all_projects.count%></div>
+                        <div class="cardName">Total Projects</div>
+                    </div>
+
+                    <div class="iconBx">
+                        
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_active"><%=@all_active_projects.count%></div>
+                        <div class="cardName">Active Projects</div>
+                    </div>
+
+                    <div class="iconBx">
+                        
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="today_login"><%=@tasks_count_assigned_to_me%></div>
+                        <div class="cardName">Task Assigned To Me</div>
+                    </div>
+
+                    <div class="iconBx">
+                      
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_booking"><%=@tasks_count_overdue_assigned_to_me%></div>
+                        <div class="cardName">Task Overdue</div>
+                    </div>
+
+                    <div class="iconBx">
+                      
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details List  -->
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Your Projects</h2>
+                        <a href="<%= new_project_path %>" class="btn"><h3>+</h3></a>
+                    </div>
+                    <table id="recent_book">
+                    <thead>
+                        <tr>
+                            <td>Project Name</td>
+                            <td>Description</td>
+                            <td>Status</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% @projects_created_by_user.each do |project| %>
+                      <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
+                      <td id="name"><%= truncate(project.project_name.split(' ').first, length: 20) %></td>
+                      <td id="date"><%= truncate(project.description.split(' ').first, length: 20) %></td>
+                        <td>
+                          <span class="status <%=project.status%>"><%=project.status%></span>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+            </div>
+            <div class="recentCustomers">
+                <div class="cardHeader">
+                    <h2>Joined Projects</h2>
+                </div>
+
+                <table id="recent_cus">
+                <thead>
+                <tr>
+                    <td>Project Name</td>
+                    <td>Description</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+            <% @projects_joined_by_user.each do |project| %>
+                <tr onclick="window.location='<%= project_path(project) %>/overview'" style="cursor: pointer;">
+                <td id="name"><%=  project.project_name %></td>
+                <td id="date"><%= project.description %></td>
+                <td>
+                <span class="status <%=project.status%>"><%=project.status%></span>
+                </td>
+                </tr>
+                <% end %>
+            </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script>
+   
+
+</script>
+<script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+<script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+</body>
+
+<script>
+
+function toggleNavigation(){
+  location.reload();
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+  sidebarValue = !sidebarValue;
+  localStorage.setItem('sidebar',sidebarValue);
+}
+
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+
+if (sidebarValue) {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.toggle('active');
+  main.classList.toggle('active');
+  title.classList.toggle('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+}else {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.remove('active');
+  main.classList.remove('active');
+  title.classList.remove('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+
+}
+
+$(document).ready(function() {
+$('#search-button').on('click', function() {
+var query = $('#search-input').val();
+$.ajax({
+  url: '/dashboard/search',
+  type: 'GET',
+  dataType: 'json', 
+  data: { query: query },
+  success: function(data) {
+console.log(data);
+$('#recent_book tbody').empty();
+data.created_projects.forEach(function(project) {
+var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+newRow += '<td id="name">' + project.project_name + '</td>';
+newRow += '<td id="date">' + project.description + '</td>';
+newRow += '<td><span class="status delivered">Active</span></td>';
+newRow += '</tr>';
+$('#recent_book tbody').append(newRow);
+});
+$('#recent_cus tbody').empty();
+data.joined_projects.forEach(function(project) {
+var newRow = '<tr onclick="window.location=\'/projects/' + project.id + '/overview\'">';
+newRow += '<td id="name">' + project.project_name + '</td>';
+newRow += '<td id="date">' + project.description + '</td>';
+newRow += '<td><span class="status delivered">Active</span></td>';
+newRow += '</tr>';
+$('#recent_cus tbody').append(newRow);
+});
+},
+  error: function() {
+    alert('Error fetching projects.');
+  }
+});
+});
+});
+
+var currentPagePath = window.location.pathname;
+console.log(currentPagePath);
+$('.navigation ul li a[href="' + currentPagePath + '"]').parent().addClass('hovered');
+</script>
+</html>

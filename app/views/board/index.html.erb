@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <%= stylesheet_link_tag 'boardindex', media: 'all', 'data-turbolinks-track': 'reload' %>
+   
+   
+</head>
+
+<body>
+<div class="popup" id="popup">
+  <button id="close" onclick="toggle_2()">&times;</button>
+  <div class="custom-modal-body">
+  
+</div>
+<div class="custom-modal-footer">
+  <button type="button" class="custom-btn custom-btn-secondary" onclick="closeModal()">Close</button>
+</div>
+</div>
+<div class="hero" id="blur">
+    <!--  Navigation  -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            
+                        </span>
+                        <h2 class="title" id="title" style="font-size:20px;">PROJECT MANAGEMENT</h2>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/dashboard" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<%= project_path%>/overview" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="apps-outline"></ion-icon>
+                        </span>
+                        <span class="title">Overview</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<%= project_path%>/tasks" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="list-outline"></ion-icon>
+                        </span>
+                        <span class="title">Tasks</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<%= project_path%>/board" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Board</span>
+                    </a>
+                </li>
+
+                
+
+                
+
+                <li>
+                    <a href="<%= project_path%>/calendar" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="calendar-number-outline"></ion-icon>
+                        </span>
+                        <span class="title" >Calendar</span>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+
+       
+        <!-- Main  -->
+        <div class="main">
+            <div class="topbar" >
+                <div class="toggle" onclick="toggleNavigation()">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+                
+
+                <div class="user" style="visibility: hidden;">
+                    <img src="" alt="">
+                </div>
+                <%= button_to "Sign Out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"}, data: { confirm: "Are you sure you want to sign out?" } ,class: 'logout_btn' ,id: 'logout_btn'%>
+            </div>
+
+            <!-- Cards  -->
+            <div class="cardBox">
+            <% if @project %>
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_users"><%= @project.project_name %></div>
+                    </div>
+                   
+                </div>
+                <% end %>
+
+                
+               
+            </div>
+            <div class="details">
+            <div class="recentOrders">
+                
+                
+                <div class='app'>
+  <main class='project'>
+    <div class='project-tasks'>
+      <div class='project-column' ondrop="drop(event, 'Todo')" ondragover="allowDrop(event)">
+        <div class='project-column-heading' >
+          <h2 class='project-column-heading__title'>ToDo</h2><button class='project-column-heading__options'></button>
+        </div>
+        <% @todo_tasks.each do |todo| %>
+        <div class='task' draggable='true' ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
+          <h3><%= todo.name %></h3>
+          <div class='task__stats'>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
+          </div>
+        </div>
+        <% end %>         
+      </div>
+      <div class='project-column'  ondrop="drop(event, 'In Progress')" ondragover="allowDrop(event)" ><div class='project-column-heading'>
+          <h2 class='project-column-heading__title'>In Progress</h2><button class='project-column-heading__options'></button>
+        </div>
+        <% @in_progress_tasks.each do |todo| %>
+        <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%=@project.id%>)" >
+          <h3><%= todo.name %></h3>
+          <div class='task__stats'>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
+          </div>
+        </div>
+        <% end %>
+        
+        </div>
+      <div class='project-column' ondrop="drop(event, 'Completed')" ondragover="allowDrop(event)"><div class='project-column-heading'>
+          <h2 class='project-column-heading__title'>Completed</h2><button class='project-column-heading__options'></button>
+        </div>
+        <% @done_tasks.each do |todo| %>
+        <div class='task' draggable='true'  ondragstart="drag(event, <%= todo.id %> , <%= @project.id%>)" >
+          <h3><%= todo.name %></h3>
+          <div class='task__stats'>
+            <span><time datetime="2021-11-24T20:00:00"><%= todo.due_date.strftime('%Y-%m-%d') %></time></span>
+          </div>
+        </div>
+        <% end %>
+    </div>
+  </main>
+  
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+           
+                
+            </div>
+        </div>
+        
+    </div>
+    
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    
+    <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+  <script>
+
+
+var currentPagePath = window.location.pathname;
+console.log(currentPagePath);
+$('.navigation ul li a[href="' + currentPagePath + '"]').parent().addClass('hovered');
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev, taskId , projectId) {
+    ev.dataTransfer.setData("text", taskId);
+    ev.dataTransfer.setData("text2", projectId);
+  }
+
+  function drop(ev, status) {
+    ev.preventDefault();
+    var taskId = ev.dataTransfer.getData("text");
+    var projectId = ev.dataTransfer.getData("text2");
+    var position = ev.currentTarget.children.length + 1;
+
+    // AJAX call to update task status and position
+    Rails.ajax({
+      type: 'PATCH',
+      url: '/projects/'+projectId +'/todos/' + taskId + '/move_todo',
+      data: 'status=' + status,
+      success: function(response) {
+        // Reload the page or update the UI as needed
+        location.reload();
+      },
+      error: function(error) {
+        console.error('Error:', error);
+      }
+    });
+  }
+</script>
+<script>
+
+function toggleNavigation(){
+  location.reload();
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+  sidebarValue = !sidebarValue;
+  localStorage.setItem('sidebar',sidebarValue);
+}
+
+var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+
+if (sidebarValue) {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.toggle('active');
+  main.classList.toggle('active');
+  title.classList.toggle('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+}else {
+  const navigation = document.querySelector('.navigation');
+  const main = document.querySelector('.main');
+  const title = document.querySelector('#title');
+  navigation.classList.remove('active');
+  main.classList.remove('active');
+  title.classList.remove('active');
+
+  const isCollapsed = title.classList.contains('active');
+  title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://unpkg.com/@freshworks/crayons@v4/css/crayons-min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/suryaumapathy2812/notify__js/notify.css">
+    <%= stylesheet_link_tag 'tasksindex', media: 'all', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+
+
+<div class="hero" id="blur">
+    <!--  Navigation  -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="">
+                        <span class="icon">
+                            
+                        </span>
+                        <h2 class="title" id="title" style="font-size:20px;">PROJECT MANAGEMENT</h2>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/dashboard" style="display:flex;margin-left:10px;">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<%= project_path(@project)%>/overview" style="display:flex;margin-left:10px;">
+                    <span class="icon">
+                            <ion-icon name="apps-outline"></ion-icon>
+                        </span>
+                        <span class="title">Overview</span>
+                    </a>
+                </li>
+
+                <li>
+                <a href="<%= project_path(@project)%>/tasks" style="display:flex;margin-left:10px;">
+                <span class="icon">
+                        <ion-icon name="list-outline"></ion-icon>
+                    </span>
+                    <span class="title">Tasks</span>
+                </a>
+            </li>
+
+                <li>
+                    <a href="<%= project_path(@project)%>/board" style="display:flex;margin-left:10px;">
+                    <span class="icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </span>
+                        <span class="title">Board</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<%= project_path(@project)%>/calendar"  style="display:flex;margin-left:10px;">
+                    <span class="icon">
+                            <ion-icon name="calendar-number-outline"></ion-icon>
+                        </span>
+                        <span class="title"  >Calendar</span>
+                    </a>
+                </li>
+
+               
+                
+
+                
+            </ul>
+        </div>
+
+       
+        <!-- Main  -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle" onclick="toggleNavigation()">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+               
+                
+
+                <div class="user" style="visibility: hidden;">
+                    <img src="" alt="">
+                </div>
+                <%= button_to "Sign Out", destroy_user_session_path, :method => 'delete', data:{turbo: "false"}, data: { confirm: "Are you sure you want to sign out?" } ,class: 'logout_btn' %>
+            </div>
+
+            <!-- Cards  -->
+            <div class="cardBox">
+            <% if @project %>
+                <div class="card">
+                    <div>
+                        <div class="numbers" id="total_users"><%= @project.project_name %></div>
+                    </div>
+                </div>
+                <% end %>
+
+  
+            </div>
+
+            <div class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>All Tasks</h2>
+                        <fw-button modal-trigger-id='modal-slider'  color="black">+</fw-button>
+                    </div>
+                    
+                    <table id="recent_book">
+                    <button id="delete_selected_button" class="delete-button-btn"   disabled>Delete Selected</button>
+                        <thead>
+                            <tr>
+                            <td><input type="checkbox" id="check_all" /></td>
+                                <td>Name</td>
+                                <td>Description</td>
+                                <td>Start date</td>
+                                <td>Due date</td>
+                                <td>Status</td>
+                                <td>Priority</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% @tasks.each do |task| %>
+                            <tr data-href="<%= edit_project_task_path(task.project, task) %>">
+                            <td><input type="checkbox" class="check" data-task-id="<%= task.id %>" /></td>
+                            <td><%= truncate(task.name.split(' ').first, length: 20) %></td>
+                            <td><%= truncate(task.description.split(' ').first, length: 20) %></td>
+                            <td><%= task.start_date.to_date %></td>
+                            <td><%= task.due_date.to_date %></td>
+                            <td><%= task.status %></td>
+                            <td><%= task.priority %></td>
+                            <td>
+          <fw-button modal-trigger-id="<%= "modal-slider-#{task.id}" %>" class="show-comments-btn"  color="black" data-task-id="<%=task.id%>" data-project-id="<%=@project.id%>" >Show</fw-button>
+          <fw-modal id="<%= "modal-slider-#{task.id}" %>" slider="true" hide-footer="true">
+            <fw-modal-title>
+              <span>Task Details</span>
+            </fw-modal-title>
+            <fw-modal-content>
+            <%= render partial: 'edit_form', locals: { task: task } %>
+            </fw-modal-content>
+          </fw-modal>
+        </td>
+                            </tr>
+                            <% end %>
+                            
+                            
+                        </tbody>
+                    </table>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <fw-modal id='modal-slider' slider='true' >
+    <fw-modal-title>
+      <span>New Task</span>
+    </fw-modal-title>
+    <fw-modal-content>
+    <%= form_with(model: [ @project, @task], local: true) do |form| %>
+    
+      <div class="form-group">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: 'form-control', required: true ,  pattern: "^[^\s]+(\s+[^\s]+)*$" , title: "No spaces in beginning and ending" %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :description %>
+        <%= form.text_area :description, class: 'form-control',  required: true , pattern: "^[^\s]+(\s+[^\s]+)*$" , title: "No spaces in beginning and ending" %>
+      </div>
+  
+      <div class="field">
+        <%= form.label :start_date %>
+        <%= form.date_field :start_date, class: 'form-control', id: 'start_date_picker', required: true %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :due_date %>
+        <%= form.date_field :due_date, class: 'form-control', required: true %>
+      </div>
+  
+      <div class="form-group">
+        <%= form.label :Assignee %>
+        <%= form.collection_select :user_id, @assignable_users, :id, :email, { prompt: true }, { class: 'form-control', required: true } %>
+      </div>
+  
+      <div class="form-group" style="display:flex; flex-direction:column;">
+        <%= form.label :priority %>
+        <%= form.select :priority, options_for_select([['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], { prompt: 'Select Priority' }), { class: 'form-control', required: true }, style: 'margin-top: 6px; padding: 10px;'  %>
+      </div>
+  
+      <div class="actions">
+        <%= form.submit 'Create Task', class: 'create-task-button' %>
+      </div>
+
+    <% end %>
+  </fw-modal-content>
+  
+    <fw-modal-footer>
+      <fw-button><%= link_to 'Back', dashboard_path %></fw-button>
+    </fw-modal-footer>
+  </fw-modal>
+    <script type="module" src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/@freshworks/crayons@v4/dist/crayons/crayons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    
+    document.querySelectorAll('.show-comments-btn').forEach(function(button) {  
+     
+      button.addEventListener('click', function() {
+        var taskId = this.getAttribute('data-task-id');
+        var projectId = this.getAttribute('data-project-id');
+        loadComments(taskId,projectId);
+        
+      });
+    });
+
+    function loadComments(taskId,projectId) {
+      Rails.ajax({
+        url: '/projects/' + projectId + '/tasks/'+taskId,
+        type: 'GET',
+        success: function(data) {
+        let commentsHTML = '';
+        if(data.length == 0){
+          commentsHTML += '<p>No Comments Found</p>';
+          document.querySelector('.scrollable-container-'+taskId).innerHTML=commentsHTML;
+        }
+
+        data.forEach(function(comment) {
+          commentsHTML += '<div class="section">';
+          commentsHTML += '<div class="into-scroll">';
+          commentsHTML += '<div class="img"> <fw-avatar mode="error" name="<%=@users.find(1).first_name %> <%= @users.find(1).last_name %>"></fw-avatar> </div>';
+          commentsHTML += '<div class="comment-body">';
+          commentsHTML += '<span>' + comment.body + '</span>';
+          commentsHTML += ' <br>';
+          commentsHTML += ' <span class="muted-font">'+ new Date(comment.created_at).toLocaleDateString()+ '</span>';
+          commentsHTML += ' <div class="muted">';
+          
+          if (comment.user_id == <%= current_user.id %>) {
+    commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '/edit">edit</a>';
+    commentsHTML += '<a href="/projects/' + comment.project_id + '/tasks/' + comment.task_id + '/comments/' + comment.id + '" data-method="delete" data-confirm="Are you sure?">delete</a>';
+  }
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+          commentsHTML += '</div>';
+         document.querySelector('.body .scrollable-container-'+taskId).innerHTML="";
+         document.querySelector('.body .scrollable-container-'+taskId).innerHTML=commentsHTML;
+        });
+        },
+        error: function() {
+          console.error('Failed to load comments.');
+        }
+      });
+    }
+ 
+
+  document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('fw-modal#modal-slider').open();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+document.querySelector('fw-modal#modal-slider').close();
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('[modal-trigger-id]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var modalId = this.getAttribute('modal-trigger-id');
+      var modal = document.querySelector(`fw-modal#${modalId}`);
+      modal.open();
+    });
+  });
+
+ 
+  document.querySelectorAll('fw-modal').forEach(function (modal) {
+    modal.addEventListener('fw-modal:close', function () {
+      this.close();
+    });
+  });
+
+  
+  document.querySelectorAll('fw-modal[slider="true"]').forEach(function (modal) {
+    modal.addEventListener('fwModalOpen', function () {
+      const taskId = modal.id.split('-')[2];
+      const form = document.getElementById(`edit-form-${taskId}`);
+      const action = form.action.replace('/tasks/', `/tasks/${taskId}/edit`);
+      form.action = action;
+    });
+  });
+});
+
+
+  $('#check_all').change(function() {
+    $('.check').prop('checked', $(this).prop('checked'));
+    updateDeleteButtonState();
+  });
+
+  $('.check').change(function() {
+    updateDeleteButtonState();
+  });
+
+  $('#delete_selected_button').click(function() {
+    var taskIds = $('.check:checked').map(function() {
+      return $(this).data('task-id');
+    }).get();
+
+    if (taskIds.length > 0 && confirm("Are you sure you want to delete the selected tasks?")) {
+      $.ajax({
+        url: '/tasks/delete_selected',
+        method: 'post',
+        data: { task_ids: taskIds , authenticity_token: $('meta[name="csrf-token"]').attr('content') },
+        success: function(response) {
+         location.reload();
+         Notify.success("Deleting the tasks is in progress");
+        },
+        error: function(error) {
+         console.log(error);
+        }
+      });
+    }
+  });
+
+  function updateDeleteButtonState() {
+    var checkedCount = $('.check:checked').length;
+    $('#delete_selected_button').prop('disabled', checkedCount === 0);
+  }
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/suryaumapathy2812/notify__js/notify.js"> </script>
+    <script>
+
+    function toggleNavigation(){
+      location.reload();
+    var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+      sidebarValue = !sidebarValue;
+      localStorage.setItem('sidebar',sidebarValue);
+    }
+    
+    var sidebarValue = JSON.parse(localStorage.getItem('sidebar'));
+    
+    if (sidebarValue) {
+      const navigation = document.querySelector('.navigation');
+      const main = document.querySelector('.main');
+      const title = document.querySelector('#title');
+      navigation.classList.toggle('active');
+      main.classList.toggle('active');
+      title.classList.toggle('active');
+    
+      const isCollapsed = title.classList.contains('active');
+      title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+    }else {
+      const navigation = document.querySelector('.navigation');
+      const main = document.querySelector('.main');
+      const title = document.querySelector('#title');
+      navigation.classList.remove('active');
+      main.classList.remove('active');
+      title.classList.remove('active');
+    
+      const isCollapsed = title.classList.contains('active');
+      title.textContent = isCollapsed ? 'PM' : 'PROJECT MANAGEMENT';
+    
+    }
+    
+
+
+var currentPagePath = window.location.pathname;
+console.log(currentPagePath);
+$('.navigation ul li a[href="' + currentPagePath + '"]').parent().addClass('hovered');
+</script>
+</body>
+
+</html>
