@@ -208,6 +208,6 @@ RSpec.describe Task, type: :model do
         status: 'Completed',
         background_color: nil
     )
-    expect(task).not_to be_valid
+    expect(task).to be_valid
   end
 end

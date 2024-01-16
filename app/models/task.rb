@@ -9,7 +9,6 @@ class Task < ApplicationRecord
     validates :due_date, presence: true
     validates :user_id, presence: true
     validates :status, presence: true
-    validates :background_color, presence: true
     validates :priority, inclusion: { in: ['high', 'medium', 'low'] }
     #having user id
     belongs_to :assigned_user, class_name: 'User', foreign_key: 'user_id', optional: true

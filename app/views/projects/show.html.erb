@@ -148,25 +148,59 @@
                 <div class="cardHeader">
                 <h2>Project Details</h2>
                 </div>
-                <h3 style="margin:10px;">Name:&nbsp; &nbsp;&nbsp;&nbsp;<%= @project.project_name %></h3>
-                <h3 style="margin:10px;">Description: &nbsp; &nbsp;&nbsp; <%= @project.description %></h3>
-                <h3 style="margin:10px;">Admin:    &nbsp;  &nbsp;&nbsp;   <%= @owner_email.email %></h3>
-                <h3 style="margin:10px;">Created Date:  &nbsp;&nbsp;&nbsp;<%= @project.created_at.strftime('%Y-%m-%d') %></h3>
+                <table id="recent_book">
+                    <thead>
+                        <tr>
+                            <td>Content</td>
+                            <td>Details</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr onclick="" style="">
+                    <td id="name">Name</td>
+                    <td id="date"><%= @project.project_name %></td>
+                    </tr>
+                    <tr onclick="" style="">
+                    <td id="name">Description</td>
+                    <td id="date"><%= @project.description %></td>
+                    </tr>
+                    <tr onclick="" style="">
+                    <td id="name">Status</td>
+                    <td id="date"><%= @project.status %></td>
+                    </tr>
+                    <tr onclick="" style="">
+                    <td id="name">Admin email</td>
+                    <td id="date"><%= @owner_email.email %></td>
+                    </tr>
+                    <tr onclick="" style="">
+                    <td id="name">Created at</td>
+                    <td id="date"><%= @project.created_at.strftime('%Y-%m-%d') %></td>
+                    </tr>
+                    </tbody>
+                    </table>
                 </div>
                 <div class="recentCustomers">
                 <div class="cardHeader">
                 <h2>Team Members</h2>
                 </div>
-                <ul>
-  <% @team_members.each do |user| %>
-    <h3 style="margin:10px;">
-      <%= user.first_name %> - <%= user.email %>
-    </h3>
-  <% end %>
+  <table id="recent_cus">
+                <thead>
+                <tr>
+                    <td>Member Name</td>
+                    <td>Email address</td>
+                </tr>
+            </thead>
+            <tbody>
+            <% @team_members.each do |user| %>
+                <tr>
+                <td id="name"><%= user.first_name %> <%= user.last_name %></td>
+                <td id="date"><%= user.email %></td>
+                </tr>
+                <% end %>
+            </tbody>
+                </table>
                 </div>
                 </div>
-                
-               
             </div>
         </div>
         

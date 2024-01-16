@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'comments/_form'
   get 'dashboard/index'
   
-
+  
 
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   resources :projects
